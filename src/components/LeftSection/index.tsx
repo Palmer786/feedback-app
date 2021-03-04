@@ -4,7 +4,7 @@ import logo from "../../images/logo.png";
 
 const Wrapper = styled.div`
   width: 25%;
-  height: 100vh;
+  height: 100%;
   background: #22282d;
 `;
 

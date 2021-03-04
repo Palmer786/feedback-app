@@ -1,12 +1,25 @@
 import React from "react";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import * as routes from "./constants/routes";
 import LeftSection from "./components/LeftSection";
+import SignIn from "./components/SignIn";
+
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+`;
 
 const GlobalStyle = createGlobalStyle`
     * {
       // 1 rem = 10px
       font-size: 62.5%;
       box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
     }
     body {
       margin: 0;
@@ -22,8 +35,15 @@ const theme = {};
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <LeftSection />
+      <Router>
+        <GlobalStyle />
+        <MainContainer>
+          <LeftSection />
+          <Switch>
+            <Route path={routes.SIGN_IN} component={SignIn} />
+          </Switch>
+        </MainContainer>
+      </Router>
     </ThemeProvider>
   );
 };
