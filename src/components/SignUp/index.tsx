@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
-import * as routes from "../../constants/routes";
 import StyledInput from "../StyledInput";
 
 const Wrapper = styled.div`
@@ -14,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const ContentBox = styled.div`
-  height: 50%;
+  height: 58%;
   width: 60%;
   display: flex;
   justify-content: space-between;
@@ -28,16 +26,42 @@ const Header = styled.h1`
   font-size: 4.8rem;
 `;
 
+const ShortInputWrapper = styled.div`
+  height: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
+
+const ShortInput = styled.input`
+  width: 30%;
+  border: none;
+  font-size: 1.6rem;
+  border-bottom: 2px solid ${({ theme }) => theme.color.lightGray};
+  padding: 1rem 0;
+  color: ${({ theme }) => theme.color.gray};
+
+  :focus {
+    border-bottom: 2px solid ${({ theme }) => theme.color.red};
+    outline: none;
+  }
+
+  ::placeholder {
+    color: ${({ theme }) => theme.color.lightGray};
+  }
+`;
+
 const LinkBox = styled.div`
   width: 80%;
   height: 15%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `;
 
 const PrimaryButton = styled.button`
-  height: 70%;
+  height: 60%;
   width: 35%;
   border-radius: 4px;
   background: ${({ theme }) => theme.color.red};
@@ -54,33 +78,23 @@ const PrimaryButton = styled.button`
   }
 `;
 
-const StyledLink = styled(Link)`
-  font-weight: 500;
-  font-size: 1.4rem;
-  color: ${({ theme }) => theme.color.gray};
-  text-decoration: none;
-
-  :hover {
-    text-decoration: underline;
-  }
-`;
-
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   return (
     <Wrapper>
       <ContentBox>
-        <Header>Log in to provide a feedback</Header>
+        <Header>Create account to provide a feedback</Header>
+        <ShortInputWrapper>
+          <StyledInput type="text" placeholder="first name" short />
+          <StyledInput type="text" placeholder="last name" short />
+        </ShortInputWrapper>
         <StyledInput type="text" placeholder="email" />
         <StyledInput type="text" placeholder="password" />
         <LinkBox>
-          <StyledLink to={routes.SIGN_UP}>
-            You don't have account? Sign up!
-          </StyledLink>
-          <PrimaryButton>LOG IN</PrimaryButton>
+          <PrimaryButton>Create account</PrimaryButton>
         </LinkBox>
       </ContentBox>
     </Wrapper>
   );
 };
 
-export default SignIn;
+export default SignUp;

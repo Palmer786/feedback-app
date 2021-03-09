@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as routes from "./constants/routes";
 import LeftSection from "./components/LeftSection";
 import SignIn from "./components/SignIn";
+import SignUp from "./components/SignUp";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -30,7 +31,14 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-const theme = {};
+const theme = {
+  color: {
+    red: "#ec1940",
+    lightRed: "#fa1743",
+    gray: "#4e5357",
+    lightGray: "#a7a9ab",
+  },
+};
 
 const App: React.FC = () => {
   return (
@@ -41,6 +49,7 @@ const App: React.FC = () => {
           <LeftSection />
           <Switch>
             <Route path={routes.SIGN_IN} component={SignIn} />
+            <Route path={routes.SIGN_UP} component={SignUp} />
           </Switch>
         </MainContainer>
       </Router>
