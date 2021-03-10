@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -66,15 +66,34 @@ const StyledLink = styled(Link)`
 `;
 
 const SignIn: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value);
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
+
   return (
     <Wrapper>
       <ContentBox>
         <Header>Log in to provide a feedback</Header>
-        <StyledInput type="text" placeholder="email" />
-        <StyledInput type="text" placeholder="password" />
+        <StyledInput
+          type="text"
+          placeholder="email"
+          value={email}
+          onChange={handleEmailChange}
+        />
+        <StyledInput
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={handlePasswordChange}
+        />
         <LinkBox>
           <StyledLink to={routes.SIGN_UP}>
-            You don't have account? Sign up!
+            Don't have account? Sign up
           </StyledLink>
           <PrimaryButton>LOG IN</PrimaryButton>
         </LinkBox>

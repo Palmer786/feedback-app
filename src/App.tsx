@@ -3,6 +3,7 @@ import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import * as routes from "./constants/routes";
+import { theme } from "./constants/theme";
 import LeftSection from "./components/LeftSection";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -31,14 +32,7 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-const theme = {
-  color: {
-    red: "#ec1940",
-    lightRed: "#fa1743",
-    gray: "#4e5357",
-    lightGray: "#a7a9ab",
-  },
-};
+
 
 const App: React.FC = () => {
   return (

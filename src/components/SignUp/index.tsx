@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import StyledInput from "../StyledInput";
+import { Link } from "react-router-dom";
+import * as routes from "../../constants/routes";
 
 const Wrapper = styled.div`
   width: 75%;
@@ -34,30 +36,23 @@ const ShortInputWrapper = styled.div`
   justify-content: space-around;
 `;
 
-const ShortInput = styled.input`
-  width: 30%;
-  border: none;
-  font-size: 1.6rem;
-  border-bottom: 2px solid ${({ theme }) => theme.color.lightGray};
-  padding: 1rem 0;
-  color: ${({ theme }) => theme.color.gray};
-
-  :focus {
-    border-bottom: 2px solid ${({ theme }) => theme.color.red};
-    outline: none;
-  }
-
-  ::placeholder {
-    color: ${({ theme }) => theme.color.lightGray};
-  }
-`;
-
 const LinkBox = styled.div`
   width: 80%;
   height: 15%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+`;
+
+const StyledLink = styled(Link)`
+  font-weight: 500;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.color.gray};
+  text-decoration: none;
+
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 const PrimaryButton = styled.button`
@@ -79,17 +74,59 @@ const PrimaryButton = styled.button`
 `;
 
 const SignUp: React.FC = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value);
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value);
+
+  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFirstName(e.target.value);
+
+  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setLastName(e.target.value);
+
   return (
     <Wrapper>
       <ContentBox>
         <Header>Create account to provide a feedback</Header>
         <ShortInputWrapper>
-          <StyledInput type="text" placeholder="first name" short />
-          <StyledInput type="text" placeholder="last name" short />
+          <StyledInput
+            type="text"
+            placeholder="first name"
+            short
+            value={firstName}
+            onChange={handleFirstNameChange}
+          />
+          <StyledInput
+            type="text"
+            placeholder="last name"
+            short
+            value={lastName}
+            onChange={handleLastNameChange}
+          />
         </ShortInputWrapper>
-        <StyledInput type="text" placeholder="email" />
-        <StyledInput type="text" placeholder="password" />
+        <StyledInput
+          type="text"
+          placeholder="email"
+          value={email}
+          onChange={handleEmailChange}
+        />
+        <StyledInput
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={handlePasswordChange}
+        />
         <LinkBox>
+          <StyledLink to={routes.SIGN_IN}>
+            Have an account? Log In
+          </StyledLink>
           <PrimaryButton>Create account</PrimaryButton>
         </LinkBox>
       </ContentBox>
