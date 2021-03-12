@@ -4,6 +4,7 @@ import styled from "styled-components";
 import StyledInput from "../StyledInput";
 import { Link } from "react-router-dom";
 import * as routes from "../../constants/routes";
+import { useFirebase } from "react-redux-firebase";
 
 const Wrapper = styled.div`
   width: 75%;
@@ -91,6 +92,24 @@ const SignUp: React.FC = () => {
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setLastName(e.target.value);
 
+  const firebase = useFirebase();
+
+  const createAccount = async () => {
+    if (firstName.length < 3)
+      return alert("First Name should be at least 3 characters");
+    if (lastName.length < 3)
+      return alert("Last Name should be at least 3 characters");
+    try {
+      await firebase.createUser(
+        { email, password },
+        { email, firstName, lastName }
+      );
+      alert("Your account has been created");
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
   return (
     <Wrapper>
       <ContentBox>
@@ -124,10 +143,10 @@ const SignUp: React.FC = () => {
           onChange={handlePasswordChange}
         />
         <LinkBox>
-          <StyledLink to={routes.SIGN_IN}>
-            Have an account? Log In
-          </StyledLink>
-          <PrimaryButton>Create account</PrimaryButton>
+          <StyledLink to={routes.SIGN_IN}>Have an account? Log In</StyledLink>
+          <PrimaryButton onClick={() => createAccount()}>
+            Create account
+          </PrimaryButton>
         </LinkBox>
       </ContentBox>
     </Wrapper>
