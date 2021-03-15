@@ -7,6 +7,7 @@ import { theme } from "./constants/theme";
 import LeftSection from "./components/LeftSection";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import Homepage from "./components/Homepage";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -32,8 +33,6 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-
-
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -42,6 +41,7 @@ const App: React.FC = () => {
         <MainContainer>
           <LeftSection />
           <Switch>
+            <Route exact path="/" component={Homepage} />
             <Route path={routes.SIGN_IN} component={SignIn} />
             <Route path={routes.SIGN_UP} component={SignUp} />
           </Switch>
