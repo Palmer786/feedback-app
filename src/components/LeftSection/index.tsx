@@ -25,6 +25,10 @@ const LogoContainer = styled.div`
   align-items: center;
 `;
 
+const Logo = styled.img`
+  height: 38%;
+`
+
 const ProfileInfoWrapper = styled.div`
   height: 80px;
   width: 65%;
@@ -124,7 +128,7 @@ const LeftSection: React.FC = () => {
   return (
     <Wrapper>
       <LogoContainer>
-        <img src={logo} alt="logo" />
+        <Logo src={logo} alt="logo" />
       </LogoContainer>
 
       <ProfileInfoWrapper>
