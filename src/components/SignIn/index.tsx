@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import * as routes from "../../constants/routes";
 import StyledInput from "../StyledInput";
 import { useFirebase } from "react-redux-firebase";
-import { useHistory } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 75%;
@@ -71,8 +70,6 @@ const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const history = useHistory();
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
 
@@ -84,7 +81,6 @@ const SignIn: React.FC = () => {
   const logIn = async () => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      setTimeout(() => history.push("/"), 2000);
       alert("Logged in");
     } catch (e) {
       alert(e.message);
