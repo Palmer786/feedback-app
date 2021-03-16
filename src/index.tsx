@@ -14,7 +14,7 @@ import "firebase/auth";
 
 const store = createStore(
   allReducers,
-  // @ts-ignore
+  // @ts-ignore chrome redux tool
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

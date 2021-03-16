@@ -41,7 +41,7 @@ const App: React.FC = () => {
         <MainContainer>
           <LeftSection />
           <Switch>
-            <Route exact path="/" component={Homepage} />
+            <Route exact path={routes.HOMEPAGE} component={Homepage} />
             <Route path={routes.SIGN_IN} component={SignIn} />
             <Route path={routes.SIGN_UP} component={SignUp} />
           </Switch>

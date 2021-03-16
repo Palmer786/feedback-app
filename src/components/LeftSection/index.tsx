@@ -27,7 +27,7 @@ const LogoContainer = styled.div`
 
 const Logo = styled.img`
   height: 38%;
-`
+`;
 
 const ProfileInfoWrapper = styled.div`
   height: 80px;
@@ -115,7 +115,6 @@ const LeftSection: React.FC = () => {
   const signOut = async () => {
     try {
       await firebase.logout();
-      alert("You have successfully logged out");
       history.push(routes.SIGN_IN);
     } catch (e) {
       alert(e.message);

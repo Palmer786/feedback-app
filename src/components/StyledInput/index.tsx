@@ -6,6 +6,7 @@ interface Props {
   type: string;
   short?: boolean;
   value: string;
+  id: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -58,6 +59,7 @@ const StyledInputComponent: React.FC<Props> = ({
   placeholder,
   short = false,
   value,
+  id,
   onChange,
 }) => {
   return (
@@ -68,6 +70,7 @@ const StyledInputComponent: React.FC<Props> = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        id={id}
       />
     </InputWrapper>
   );

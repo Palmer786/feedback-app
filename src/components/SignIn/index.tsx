@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import * as routes from "../../constants/routes";
 import StyledInput from "../StyledInput";
 import { useFirebase } from "react-redux-firebase";
+
+interface LoginData {
+  email: string;
+  password: string;
+}
 
 const Wrapper = styled.div`
   width: 75%;
@@ -67,21 +72,26 @@ const StyledLink = styled(Link)`
 `;
 
 const SignIn: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value);
+  const { email, password } = loginData;
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPassword(e.target.value);
+  const history = useHistory();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [id]: value }));
+  };
 
   const firebase = useFirebase();
 
   const logIn = async () => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      alert("Logged in");
+      history.push(routes.HOMEPAGE);
     } catch (e) {
       alert(e.message);
     }
@@ -95,13 +105,15 @@ const SignIn: React.FC = () => {
           type="text"
           placeholder="email"
           value={email}
-          onChange={handleEmailChange}
+          id="email"
+          onChange={handleInputChange}
         />
         <StyledInput
           type="password"
           placeholder="password"
           value={password}
-          onChange={handlePasswordChange}
+          id="password"
+          onChange={handleInputChange}
         />
         <LinkBox>
           <StyledLink to={routes.SIGN_UP}>

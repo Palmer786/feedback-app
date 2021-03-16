@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link, useHistory } from "react-router-dom";
+import { useFirebase } from "react-redux-firebase";
 
 import StyledInput from "../StyledInput";
-import { Link } from "react-router-dom";
 import * as routes from "../../constants/routes";
-import { useFirebase } from "react-redux-firebase";
+
+interface UserData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
 
 const Wrapper = styled.div`
   width: 75%;
@@ -75,22 +82,21 @@ const PrimaryButton = styled.button`
 `;
 
 const SignUp: React.FC = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState<UserData>({
+    firstName: "",
+    lastName: "",
+    password: "",
+    email: "",
+  });
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value);
+  const { firstName, lastName, email, password } = userData;
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPassword(e.target.value);
+  const history = useHistory();
 
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setFirstName(e.target.value);
-
-  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setLastName(e.target.value);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setUserData((prev) => ({ ...prev, [id]: value }));
+  };
 
   const firebase = useFirebase();
 
@@ -104,7 +110,7 @@ const SignUp: React.FC = () => {
         { email, password },
         { email, firstName, lastName }
       );
-      alert("Your account has been created");
+      history.push(routes.HOMEPAGE);
     } catch (e) {
       alert(e.message);
     }
@@ -120,27 +126,31 @@ const SignUp: React.FC = () => {
             placeholder="first name"
             short
             value={firstName}
-            onChange={handleFirstNameChange}
+            id="firstName"
+            onChange={handleInputChange}
           />
           <StyledInput
             type="text"
             placeholder="last name"
             short
             value={lastName}
-            onChange={handleLastNameChange}
+            id="lastName"
+            onChange={handleInputChange}
           />
         </ShortInputWrapper>
         <StyledInput
           type="text"
           placeholder="email"
           value={email}
-          onChange={handleEmailChange}
+          id="email"
+          onChange={handleInputChange}
         />
         <StyledInput
           type="password"
           placeholder="password"
           value={password}
-          onChange={handlePasswordChange}
+          id="password"
+          onChange={handleInputChange}
         />
         <LinkBox>
           <StyledLink to={routes.SIGN_IN}>Have an account? Log In</StyledLink>
