@@ -15,6 +15,7 @@ interface UserData {
 
 const Wrapper = styled.div`
   width: 75%;
+  min-height: 840px;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -108,7 +109,7 @@ const SignUp: React.FC = () => {
     try {
       await firebase.createUser(
         { email, password },
-        { email, firstName, lastName }
+        { email, firstName, lastName, fullName: `${firstName} ${lastName}` }
       );
       history.push(routes.HOMEPAGE);
     } catch (e) {
@@ -116,9 +117,13 @@ const SignUp: React.FC = () => {
     }
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") return createAccount();
+  };
+
   return (
     <Wrapper>
-      <ContentBox>
+      <ContentBox onKeyUp={handleKeyUp}>
         <Header>Create account to provide a feedback</Header>
         <ShortInputWrapper>
           <StyledInput

@@ -13,6 +13,7 @@ interface LoginData {
 
 const Wrapper = styled.div`
   width: 75%;
+  min-height: 840px;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -97,9 +98,13 @@ const SignIn: React.FC = () => {
     }
   };
 
+  const handleKeyUp = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") return logIn();
+  };
+
   return (
     <Wrapper>
-      <ContentBox>
+      <ContentBox onKeyUp={handleKeyUp}>
         <Header>Log in to provide a feedback</Header>
         <StyledInput
           type="text"

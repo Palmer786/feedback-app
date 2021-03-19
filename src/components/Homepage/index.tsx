@@ -5,6 +5,7 @@ import smile from "../../images/homepage-smile.png";
 
 const Wrapper = styled.div`
   width: 75%;
+  min-height: 840px;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -29,6 +30,7 @@ const ImageContainer = styled.div`
 
 const StyledImg = styled.img`
   height: 100%;
+  user-select: none;
 `;
 
 const StyledH4 = styled.h4`

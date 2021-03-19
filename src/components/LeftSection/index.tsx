@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 
 import logo from "../../images/logo.png";
 import * as routes from "../../constants/routes";
+import SearchTeam from "./SearchTeam";
 
 const Wrapper = styled.div`
   width: 25%;
-  height: 100%;
+  min-height: 840px;
+  height: 100vh;
   background: #22282d;
   display: flex;
   flex-direction: column;
@@ -20,13 +22,14 @@ const Wrapper = styled.div`
 const LogoContainer = styled.div`
   display: flex;
   width: 65%;
-  height: 20%;
+  height: 160px;
   flex-direction: row;
   align-items: center;
 `;
 
 const Logo = styled.img`
-  height: 38%;
+  height: 64px;
+  user-select: none;
 `;
 
 const ProfileInfoWrapper = styled.div`
@@ -39,7 +42,7 @@ const ProfileInfoWrapper = styled.div`
 
 const AvatarContainer = styled.div`
   height: 100%;
-  width: 25.7%;
+  width: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -54,7 +57,7 @@ const Avatar = styled.div`
 
 const ProfileInfoContainer = styled.div`
   width: 74.3%;
-  height: 100%;
+  height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -104,14 +107,12 @@ const LeftSection: React.FC = () => {
   const firebase = useFirebase();
   const history = useHistory();
 
-  const { firstName, lastName } = useSelector(
+  const { fullName,isLoaded, isEmpty } = useSelector(
     (state: ISelector) => state.firebase.profile
   );
 
-  const { isLoaded, isEmpty } = useSelector(
-    (state: ISelector) => state.firebase.auth
-  );
-  console.log("name:", firstName);
+
+
   const signOut = async () => {
     try {
       await firebase.logout();
@@ -134,10 +135,11 @@ const LeftSection: React.FC = () => {
         <AvatarContainer>
           <Avatar />
         </AvatarContainer>
+
         <ProfileInfoContainer>
-          {firstName ? (
+          {fullName ? (
             <>
-              <FullNameP>{`${firstName} ${lastName}`}</FullNameP>
+              <FullNameP>{fullName}</FullNameP>
               <LogOutP onClick={() => signOut()}>Log out</LogOutP>
             </>
           ) : (
@@ -149,6 +151,8 @@ const LeftSection: React.FC = () => {
           )}
         </ProfileInfoContainer>
       </ProfileInfoWrapper>
+
+      {fullName && <SearchTeam />}
     </Wrapper>
   );
 };
