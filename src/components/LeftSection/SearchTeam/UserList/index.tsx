@@ -1,7 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+
+import * as routes from "../../../../constants/routes";
 
 interface Props {
   query: string;
@@ -68,6 +71,8 @@ const UserName = styled.p`
 const UserList: React.FC<Props> = ({ query }) => {
   useFirestoreConnect([{ collection: "users" }]);
 
+  const history = useHistory();
+
   const users = useSelector((state: ISelector) => {
     return state.firestore.ordered.users;
   });
@@ -75,6 +80,8 @@ const UserList: React.FC<Props> = ({ query }) => {
   const currentUserUID = useSelector((state: ISelector) => {
     return state.firebase.auth.uid;
   });
+
+  const handleOnClick = (id: string) => history.push(`${routes.USER_FEEDBACK}${id}`);
 
   return (
     <UserListContainer>
@@ -87,7 +94,7 @@ const UserList: React.FC<Props> = ({ query }) => {
             const { id, fullName } = filteredUser;
             if (id === currentUserUID) return;
             return (
-              <UserContainer key={id}>
+              <UserContainer key={id} onClick={() => handleOnClick(id)}>
                 <UserAvatarContainer>
                   <UserAvatar />
                 </UserAvatarContainer>

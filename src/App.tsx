@@ -8,6 +8,7 @@ import LeftSection from "./components/LeftSection";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Homepage from "./components/Homepage";
+import UserFeedback from "./components/UserFeedback";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -44,6 +45,10 @@ const App: React.FC = () => {
             <Route exact path={routes.HOMEPAGE} component={Homepage} />
             <Route path={routes.SIGN_IN} component={SignIn} />
             <Route path={routes.SIGN_UP} component={SignUp} />
+            <Route
+              path={`${routes.USER_FEEDBACK}:id`}
+              component={UserFeedback}
+            />
           </Switch>
         </MainContainer>
       </Router>
