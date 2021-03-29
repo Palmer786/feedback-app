@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import logo from "../../images/logo.png";
+import userAvatar from "../../images/user-image.png";
 import * as routes from "../../constants/routes";
 import SearchTeam from "./SearchTeam";
 
@@ -48,7 +49,7 @@ const AvatarContainer = styled.div`
   align-items: center;
 `;
 
-const Avatar = styled.div`
+const Avatar = styled.img`
   border-radius: 50%;
   background: white;
   width: 75%;
@@ -107,11 +108,9 @@ const LeftSection: React.FC = () => {
   const firebase = useFirebase();
   const history = useHistory();
 
-  const { fullName,isLoaded, isEmpty } = useSelector(
+  const { displayName, avatarUrl, isLoaded, isEmpty } = useSelector(
     (state: ISelector) => state.firebase.profile
   );
-
-
 
   const signOut = async () => {
     try {
@@ -133,13 +132,17 @@ const LeftSection: React.FC = () => {
 
       <ProfileInfoWrapper>
         <AvatarContainer>
-          <Avatar />
+          {avatarUrl ? (
+            <Avatar src={avatarUrl} alt="avatar" />
+          ) : (
+            <Avatar src={userAvatar} alt="avatar" />
+          )}
         </AvatarContainer>
 
         <ProfileInfoContainer>
-          {fullName ? (
+          {displayName ? (
             <>
-              <FullNameP>{fullName}</FullNameP>
+              <FullNameP>{displayName}</FullNameP>
               <LogOutP onClick={() => signOut()}>Log out</LogOutP>
             </>
           ) : (
@@ -152,7 +155,7 @@ const LeftSection: React.FC = () => {
         </ProfileInfoContainer>
       </ProfileInfoWrapper>
 
-      {fullName && <SearchTeam />}
+      {displayName && <SearchTeam />}
     </Wrapper>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
+import { useFirebase } from "react-redux-firebase";
 
 import * as routes from "../../constants/routes";
 import StyledInput from "../StyledInput";
-import { useFirebase } from "react-redux-firebase";
+import googleIcon from "../../images/google-icon.png";
 
 interface LoginData {
   email: string;
@@ -61,6 +62,18 @@ const PrimaryButton = styled.button`
   }
 `;
 
+const GoogleButton = styled(PrimaryButton)`
+  background: #1151ea;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  :hover {
+    background: #175af5;
+  }
+`;
+
 const StyledLink = styled(Link)`
   font-weight: 500;
   font-size: 1.4rem;
@@ -89,7 +102,7 @@ const SignIn: React.FC = () => {
 
   const firebase = useFirebase();
 
-  const logIn = async () => {
+  const logInEmail = async () => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       history.push(routes.HOMEPAGE);
@@ -98,8 +111,20 @@ const SignIn: React.FC = () => {
     }
   };
 
+  const logInGoogle = async () => {
+    try {
+      await firebase.login({
+        provider: "google",
+        type: "popup",
+      });
+      history.push(routes.HOMEPAGE);
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
   const handleKeyUp = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") return logIn();
+    if (e.key === "Enter") return logInEmail();
   };
 
   return (
@@ -124,7 +149,13 @@ const SignIn: React.FC = () => {
           <StyledLink to={routes.SIGN_UP}>
             Don't have account? Sign up
           </StyledLink>
-          <PrimaryButton onClick={() => logIn()}>LOG IN</PrimaryButton>
+          <GoogleButton onClick={() => logInGoogle()}>
+            <span>
+              <img src={googleIcon} alt="google" style={{ width: "80%" }} />
+            </span>
+            Sign in with Google
+          </GoogleButton>
+          <PrimaryButton onClick={() => logInEmail()}>LOG IN</PrimaryButton>
         </LinkBox>
       </ContentBox>
     </Wrapper>

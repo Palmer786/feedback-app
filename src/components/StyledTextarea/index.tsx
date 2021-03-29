@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 interface Props {
-    placeholder: string;
-    value: string;
-    id: string;
-    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  placeholder: string;
+  value: string;
+  id: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const TextareaWrapper = styled.div`
@@ -18,9 +18,7 @@ const StyledTextArea = styled.textarea<{ value: string }>`
   border: none;
   font-size: 1.6rem;
   border-bottom: ${({ value, theme }) =>
-    value.length > 1
-        ? `2px solid ${theme.color.red}`
-        : `2px solid #D3D4D5`};
+    value.length > 1 ? `2px solid ${theme.color.red}` : `2px solid #D3D4D5`};
   padding: 1rem 0;
   color: ${({ theme }) => theme.color.gray};
 
@@ -45,9 +43,8 @@ const StyledTextArea = styled.textarea<{ value: string }>`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${({theme}) => theme.color.red};
+    background: ${({ theme }) => theme.color.red};
   }
-  
 `;
 
 const StyledLabel = styled.label<{ value: string }>`
@@ -57,16 +54,21 @@ const StyledLabel = styled.label<{ value: string }>`
   text-transform: capitalize;
 `;
 
-const StyledTextareaComponent: React.FC<Props> = ({value, onChange, placeholder, id}) => (
-    <TextareaWrapper>
-        <StyledLabel value={value}>{placeholder}</StyledLabel>
-        <StyledTextArea
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            id={id}
-        />
-    </TextareaWrapper>
-)
+const StyledTextareaComponent: React.FC<Props> = ({
+  value,
+  onChange,
+  placeholder,
+  id,
+}) => (
+  <TextareaWrapper>
+    <StyledLabel value={value}>{placeholder}</StyledLabel>
+    <StyledTextArea
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      id={id}
+    />
+  </TextareaWrapper>
+);
 
 export default StyledTextareaComponent;

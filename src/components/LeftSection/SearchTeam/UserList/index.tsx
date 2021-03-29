@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import * as routes from "../../../../constants/routes";
+import userAvatar from "../../../../images/user-image.png";
 
 interface Props {
   query: string;
@@ -55,7 +56,7 @@ const UserAvatarContainer = styled.div`
   align-items: center;
 `;
 
-const UserAvatar = styled.div`
+const UserAvatar = styled.img`
   height: 80%;
   width: 80%;
   border-radius: 50%;
@@ -81,24 +82,29 @@ const UserList: React.FC<Props> = ({ query }) => {
     return state.firebase.auth.uid;
   });
 
-  const handleOnClick = (id: string) => history.push(`${routes.USER_FEEDBACK}${id}`);
+  const handleOnClick = (id: string) =>
+    history.push(`${routes.USER_FEEDBACK}${id}`);
 
   return (
     <UserListContainer>
       {users &&
         users
           .filter((user) =>
-            user.fullName.toLowerCase().includes(query.toLowerCase())
+            user.displayName.toLowerCase().includes(query.toLowerCase())
           )
           .map((filteredUser) => {
-            const { id, fullName } = filteredUser;
-            if (id === currentUserUID) return;
+            const { id, displayName, avatarUrl } = filteredUser;
+            if (id === currentUserUID) return null;
             return (
               <UserContainer key={id} onClick={() => handleOnClick(id)}>
                 <UserAvatarContainer>
-                  <UserAvatar />
+                  {avatarUrl ? (
+                    <UserAvatar src={avatarUrl} alt="avatar" />
+                  ) : (
+                    <UserAvatar src={userAvatar} alt="avatar" />
+                  )}
                 </UserAvatarContainer>
-                <UserName>{fullName}</UserName>
+                <UserName>{displayName}</UserName>
               </UserContainer>
             );
           })}

@@ -14,7 +14,8 @@ interface ISelector {
       lastName: string;
       isLoaded: boolean;
       isEmpty: boolean;
-      fullName: string;
+      displayName: string;
+      avatarUrl: string;
     };
   };
 }
@@ -24,5 +25,6 @@ interface User {
   email: string;
   firstName: string;
   lastName: string;
-  fullName: string;
+  displayName: string;
+  avatarUrl: string;
 }

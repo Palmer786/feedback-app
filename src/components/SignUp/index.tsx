@@ -109,7 +109,7 @@ const SignUp: React.FC = () => {
     try {
       await firebase.createUser(
         { email, password },
-        { email, firstName, lastName, fullName: `${firstName} ${lastName}` }
+        { email, firstName, lastName, displayName: `${firstName} ${lastName}` }
       );
       history.push(routes.HOMEPAGE);
     } catch (e) {

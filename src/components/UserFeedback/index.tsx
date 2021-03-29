@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { useHistory, useParams } from "react-router-dom";
@@ -7,6 +7,7 @@ import styled from "styled-components";
 import * as routes from "../../constants/routes";
 import closeIcon from "../../images/close-icon.png";
 import star from "../../images/star.png";
+import userAvatar from "../../images/user-image.png";
 import StyledTextarea from "../StyledTextarea";
 
 const MainContainer = styled.div`
@@ -52,7 +53,7 @@ const UserAvatarContainer = styled.div`
   align-items: center;
 `;
 
-const UserAvatar = styled.div`
+const UserAvatar = styled.img`
   height: 80%;
   width: 80%;
   border-radius: 50%;
@@ -165,58 +166,6 @@ const WriteFeedbackHeader = styled.p`
   color: ${({ theme }) => theme.color.black};
 `;
 
-const InputWrapper = styled.div`
-  width: 100%;
-`;
-
-const StyledInput = styled.textarea<{ value: string }>`
-  width: 100%;
-  height: 60%;
-  border: none;
-  font-size: 1.6rem;
-  border-bottom: ${({ value, theme }) =>
-    value.length > 1
-      ? `2px solid ${theme.color.red}`
-      : `2px solid ${theme.color.lightGray}`};
-  padding: 1rem 0;
-  color: ${({ theme }) => theme.color.gray};
-
-  :focus {
-    border-bottom: 2px solid ${({ theme }) => theme.color.red};
-    outline: none;
-  }
-
-  ::placeholder {
-    color: ${({ theme }) => theme.color.lightGray};
-  }
-
-  overflow-y: auto;
-  resize: none;
-
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #424242;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #9e9e9e;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.color.red};
-  }
-`;
-
-const StyledLabel = styled.label<{ value: string }>`
-  visibility: ${({ value }) => (value.length > 0 ? "visible" : "hidden")};
-  color: ${({ theme }) => theme.color.red};
-  font-size: 1.2rem;
-  text-transform: capitalize;
-`;
-
 const StyledButton = styled.button`
   height: 40px;
   width: 20%;
@@ -235,6 +184,14 @@ const UserFeedback: React.FC = () => {
     advice: "",
   });
 
+  const [selectedUser, setSelectedUser] = useState<{
+    displayName: string;
+    avatarUrl: string;
+  }>({
+    displayName: "",
+    avatarUrl: "",
+  });
+
   const { whatIsWrong, advice } = feedback;
 
   const history = useHistory();
@@ -246,6 +203,14 @@ const UserFeedback: React.FC = () => {
   const users = useSelector((state: ISelector) => {
     return state.firestore.ordered.users;
   });
+
+  useEffect(() => {
+    if (users) {
+      setSelectedUser(
+        users.filter((user) => user.id === params.id).map((user) => user)[0]
+      );
+    }
+  }, [users, params]);
 
   const closeUserFeedback = () => history.push(routes.HOMEPAGE);
 
@@ -273,15 +238,14 @@ const UserFeedback: React.FC = () => {
         <HeaderWrapper>
           <UserContainer>
             <UserAvatarContainer>
-              <UserAvatar />
+              {selectedUser.avatarUrl ? (
+                <UserAvatar src={selectedUser.avatarUrl} />
+              ) : (
+                <UserAvatar src={userAvatar} />
+              )}
             </UserAvatarContainer>
             <UserInfoContainer>
-              <UserName>
-                {users &&
-                  users
-                    .filter((user) => user.id === params.id)
-                    .map((user) => user.fullName)}
-              </UserName>
+              <UserName>{selectedUser.displayName}</UserName>
               <UserTitle>Senior Software Engineer</UserTitle>
             </UserInfoContainer>
           </UserContainer>
@@ -299,7 +263,7 @@ const UserFeedback: React.FC = () => {
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
           {skills.map((skill) => (
-            <SingleSkillContainer>
+            <SingleSkillContainer key={skill}>
               <SingleSkillName>{skill}</SingleSkillName>
               <StarsContainer>
                 <StarIcon src={star} alt="star" />

@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useFirestoreConnect } from "react-redux-firebase";
-import { useSelector } from "react-redux";
 
 import searchIcon from "../../../images/search-icon.png";
 import searchIconActive from "../../../images/search-icon-active.png";
