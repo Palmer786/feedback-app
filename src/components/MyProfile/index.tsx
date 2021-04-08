@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { isLoaded, useFirestoreConnect } from "react-redux-firebase";
-import { useHistory, useParams } from "react-router-dom";
+import { useFirestoreConnect } from "react-redux-firebase";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import * as routes from "../../constants/routes";
-import closeIcon from "../../images/close-icon.png";
+import settingsIcon from "../../images/settings-icon.png";
 import star from "../../images/star.png";
 import userAvatar from "../../images/user-image.png";
-import StyledTextarea from "../StyledTextarea";
 import { basicSkills } from "../../constants/basicSkills";
 
 const MainContainer = styled.div`
@@ -91,9 +90,9 @@ const IconContainer = styled.div`
   align-items: center;
 `;
 
-const CloseIcon = styled.img`
-  width: 40%;
-  height: 40%;
+const SettingsIcon = styled.img`
+  width: 70%;
+  height: 70%;
   cursor: pointer;
 `;
 
@@ -104,7 +103,7 @@ const FeedbackHeader = styled.p`
 
 const PersonalSkillsContainer = styled.div`
   width: 100%;
-  height: 50%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -155,108 +154,43 @@ const StarIcon = styled.img`
   height: 42%;
 `;
 
-const WriteFeedbackContainer = styled.div`
-  width: 100%;
-  height: 40%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const WriteFeedbackHeader = styled.p`
-  font-size: 1.6rem;
-  color: ${({ theme }) => theme.color.black};
-`;
-
-const StyledButton = styled.button`
-  height: 40px;
-  width: 20%;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  background: ${({ theme }) => theme.color.red};
-  cursor: pointer;
-  font-size: 1.6rem;
-  align-self: flex-end;
-`;
-
 const UserFeedback: React.FC = () => {
-  const [feedback, setFeedback] = useState({
-    whatIsWrong: "",
-    advice: "",
-  });
+  useFirestoreConnect([{ collection: "users" }]);
 
-  const [selectedUser, setSelectedUser] = useState<{
-    displayName: string;
-    avatarUrl: string;
-    skills: string[];
-    proffesion: string;
-  }>({
-    displayName: "",
-    avatarUrl: "",
-    skills: [],
-    proffesion: "",
-  });
-
-  const { whatIsWrong, advice } = feedback;
+  const { skills, displayName, avatarUrl, proffesion } = useSelector(
+    (state: ISelector) => state.firebase.profile
+  );
 
   const history = useHistory();
 
-  const params: { id: string } = useParams();
-
-  useFirestoreConnect([{ collection: "users" }]);
-
-  const users = useSelector((state: ISelector) => {
-    return state.firestore.ordered.users;
-  });
-
-  useEffect(() => {
-    if (users) {
-      setSelectedUser(
-        users.filter((user) => user.id === params.id).map((user) => user)[0]
-      );
-    }
-  }, [users, params]);
-
-  const closeUserFeedback = () => history.push(routes.HOMEPAGE);
-
-  const handleKeyUp = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") return history.push(routes.HOMEPAGE);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
-    setFeedback((prev) => ({ ...prev, [id]: value }));
-  };
+  const goToSettings = () => history.push(routes.PROFILE_SETTINGS);
 
   return (
-    <MainContainer onKeyUp={handleKeyUp}>
+    <MainContainer>
       <Wrapper>
         <HeaderWrapper>
           <UserContainer>
             <UserAvatarContainer>
-              {selectedUser.avatarUrl && isLoaded() ? (
-                <UserAvatar src={selectedUser.avatarUrl} />
+              {avatarUrl ? (
+                <UserAvatar src={avatarUrl} />
               ) : (
                 <UserAvatar src={userAvatar} />
               )}
             </UserAvatarContainer>
             <UserInfoContainer>
-              <UserName>{selectedUser.displayName}</UserName>
-              {selectedUser.proffesion && (
-                <UserTitle>{selectedUser.proffesion}</UserTitle>
-              )}
+              <UserName>{displayName}</UserName>
+              {proffesion && <UserTitle>{proffesion}</UserTitle>}
             </UserInfoContainer>
           </UserContainer>
           <IconContainer>
-            <CloseIcon
-              src={closeIcon}
-              alt="close"
-              onClick={() => closeUserFeedback()}
+            <SettingsIcon
+              src={settingsIcon}
+              alt="settings"
+              onClick={() => goToSettings()}
             />
           </IconContainer>
         </HeaderWrapper>
-        <FeedbackHeader>Provide feedback</FeedbackHeader>
+        <FeedbackHeader>My feedback</FeedbackHeader>
         <PersonalSkillsHeader>
           Personal skills and competences
         </PersonalSkillsHeader>
@@ -273,8 +207,8 @@ const UserFeedback: React.FC = () => {
               </StarsContainer>
             </SingleSkillContainer>
           ))}
-          {selectedUser.skills &&
-            selectedUser.skills.map((skill) => (
+          {skills &&
+            skills.map((skill) => (
               <SingleSkillContainer key={skill}>
                 <SingleSkillName>{skill}</SingleSkillName>
                 <StarsContainer>
@@ -287,22 +221,6 @@ const UserFeedback: React.FC = () => {
               </SingleSkillContainer>
             ))}
         </PersonalSkillsContainer>
-        <WriteFeedbackContainer>
-          <WriteFeedbackHeader>Write a feedback</WriteFeedbackHeader>
-          <StyledTextarea
-            value={whatIsWrong}
-            placeholder="What is wrong"
-            id="whatIsWrong"
-            onChange={handleChange}
-          />
-          <StyledTextarea
-            value={advice}
-            placeholder="What could be improved"
-            id="advice"
-            onChange={handleChange}
-          />
-          <StyledButton>Submit</StyledButton>
-        </WriteFeedbackContainer>
       </Wrapper>
     </MainContainer>
   );

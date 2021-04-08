@@ -8,14 +8,14 @@ interface ISelector {
   firebase: {
     auth: {
       uid: string;
-    }
+    };
     profile: {
-      firstName: string;
-      lastName: string;
       isLoaded: boolean;
       isEmpty: boolean;
       displayName: string;
       avatarUrl: string;
+      skills: string[];
+      proffesion: string;
     };
   };
 }
@@ -23,8 +23,8 @@ interface ISelector {
 interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  proffesion: string;
   displayName: string;
   avatarUrl: string;
+  skills: string[];
 }

@@ -4,6 +4,7 @@ import { useFirebase } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import "firebase/storage";
 
 import logo from "../../images/logo.png";
 import userAvatar from "../../images/user-image.png";
@@ -64,10 +65,15 @@ const ProfileInfoContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const FullNameP = styled.p`
+const FullNameP = styled(Link)`
   color: white;
   font-size: 1.6rem;
   margin: 0;
+  text-decoration: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.color.red};
+  }
 `;
 
 const LogOutP = styled.p`
@@ -142,7 +148,7 @@ const LeftSection: React.FC = () => {
         <ProfileInfoContainer>
           {displayName ? (
             <>
-              <FullNameP>{displayName}</FullNameP>
+              <FullNameP to={routes.MY_PROFILE}>{displayName}</FullNameP>
               <LogOutP onClick={() => signOut()}>Log out</LogOutP>
             </>
           ) : (

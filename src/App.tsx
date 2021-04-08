@@ -9,6 +9,8 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Homepage from "./components/Homepage";
 import UserFeedback from "./components/UserFeedback";
+import MyProfile from "./components/MyProfile";
+import ProfileSettings from "./components/ProfileSettings";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -45,6 +47,8 @@ const App: React.FC = () => {
             <Route exact path={routes.HOMEPAGE} component={Homepage} />
             <Route path={routes.SIGN_IN} component={SignIn} />
             <Route path={routes.SIGN_UP} component={SignUp} />
+            <Route exact path={routes.MY_PROFILE} component={MyProfile} />
+            <Route path={routes.PROFILE_SETTINGS} component={ProfileSettings} />
             <Route
               path={`${routes.USER_FEEDBACK}:id`}
               component={UserFeedback}
