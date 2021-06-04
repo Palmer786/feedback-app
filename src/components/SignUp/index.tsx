@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useFirebase } from "react-redux-firebase";
 
 import StyledInput from "../StyledInput";
 import * as routes from "../../constants/routes";
+import { basicSkills } from "../../constants/basicSkills";
 
 import {
   StyledLink,
@@ -50,7 +50,12 @@ const SignUp: React.FC = () => {
     try {
       await firebase.createUser(
         { email, password },
-        { email, displayName: `${firstName} ${lastName}` }
+        {
+          email,
+          displayName: `${firstName} ${lastName}`,
+          skills: basicSkills,
+          ratedUsers: [],
+        }
       );
       history.push(routes.HOMEPAGE);
     } catch (e) {

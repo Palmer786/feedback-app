@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useFirestoreConnect } from "react-redux-firebase";
+import { isLoaded, useFirestoreConnect } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 
+import ratedIcon from "../../../../images/rated-icon.png";
 import * as routes from "../../../../constants/routes";
 import userAvatar from "../../../../images/user-image.png";
 
@@ -13,6 +13,8 @@ import {
   UserContainer,
   UserListContainer,
   UserName,
+  RatedIcon,
+  RatedIconContainer,
 } from "./styles";
 
 interface Props {
@@ -28,12 +30,18 @@ const UserList: React.FC<Props> = ({ query }) => {
     return state.firestore.ordered.users;
   });
 
+  const ratedUsers = useSelector((state: ISelector) => {
+    return state.firebase.profile.ratedUsers;
+  });
+
   const currentUserUID = useSelector((state: ISelector) => {
     return state.firebase.auth.uid;
   });
 
   const handleOnClick = (id: string) =>
     history.push(`${routes.USER_FEEDBACK}${id}`);
+
+  if (!isLoaded()) return <p>Loading...</p>;
 
   return (
     <UserListContainer>
@@ -55,6 +63,11 @@ const UserList: React.FC<Props> = ({ query }) => {
                   )}
                 </UserAvatarContainer>
                 <UserName>{displayName}</UserName>
+                {ratedUsers.filter((userID) => userID === id).length > 0 ? (
+                  <RatedIconContainer style={{ width: "10%", height: "100%" }}>
+                    <RatedIcon src={ratedIcon} alt="rated" />
+                  </RatedIconContainer>
+                ) : null}
               </UserContainer>
             );
           })}

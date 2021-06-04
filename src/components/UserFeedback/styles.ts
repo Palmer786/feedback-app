@@ -116,34 +116,6 @@ export const PersonalSkillsHeader = styled.p`
   font-size: 1.6rem;
 `;
 
-export const SingleSkillContainer = styled.div`
-  width: 100%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const SingleSkillName = styled.p`
-  color: #7a7e81;
-  font-size: 1.4rem;
-`;
-
-export const StarsContainer = styled.div`
-  width: 26%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 20px;
-  user-select: none;
-`;
-
-export const StarIcon = styled.img`
-  width: 14%;
-  height: 42%;
-`;
-
 export const WriteFeedbackContainer = styled.div`
   width: 100%;
   height: 40%;

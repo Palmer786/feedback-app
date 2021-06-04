@@ -26,8 +26,8 @@ export const ImageContainer = styled.div`
 `;
 
 export const StyledImg = styled.img`
-  height: 61px;
-  width: 61px;
+  height: 60px;
+  width: 60px;
   user-select: none;
 `;
 

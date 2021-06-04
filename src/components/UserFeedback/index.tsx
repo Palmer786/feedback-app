@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { isLoaded, useFirestoreConnect } from "react-redux-firebase";
+import {
+  isLoaded,
+  useFirebase,
+  useFirestoreConnect,
+} from "react-redux-firebase";
 import { useHistory, useParams } from "react-router-dom";
-import styled from "styled-components";
 
 import * as routes from "../../constants/routes";
 import closeIcon from "../../images/close-icon.png";
-import star from "../../images/star.png";
 import userAvatar from "../../images/user-image.png";
 import StyledTextarea from "../StyledTextarea";
-import { basicSkills } from "../../constants/basicSkills";
+import SingleSkill from "../SingleSkill";
 
 import {
   Wrapper,
@@ -19,14 +21,10 @@ import {
   UserAvatar,
   UserAvatarContainer,
   UserContainer,
-  SingleSkillContainer,
   MainContainer,
   IconContainer,
   UserInfoContainer,
   UserTitle,
-  StarsContainer,
-  SingleSkillName,
-  StarIcon,
   PersonalSkillsContainer,
   PersonalSkillsHeader,
   FeedbackHeader,
@@ -36,7 +34,7 @@ import {
 } from "./styles";
 
 const UserFeedback: React.FC = () => {
-  const [feedback, setFeedback] = useState({
+  const [comments, setComments] = useState({
     whatIsWrong: "",
     advice: "",
   });
@@ -53,9 +51,18 @@ const UserFeedback: React.FC = () => {
     proffesion: "",
   });
 
-  const { whatIsWrong, advice } = feedback;
+  const [skillsRating, setSkillsRating] = useState({});
+
+  const [isDocExists, setDocExists] = useState(false);
+
+  const handleSkillsRating = (skill: string, value: number) =>
+    setSkillsRating((prev: any) => ({ ...prev, [skill]: value }));
+
+  const { whatIsWrong, advice } = comments;
 
   const history = useHistory();
+
+  const firebase = useFirebase();
 
   const params: { id: string } = useParams();
 
@@ -63,6 +70,14 @@ const UserFeedback: React.FC = () => {
 
   const users = useSelector((state: ISelector) => {
     return state.firestore.ordered.users;
+  });
+
+  const ratedUsers = useSelector((state: ISelector) => {
+    return state.firebase.profile.ratedUsers;
+  });
+
+  const currentUserUID = useSelector((state: ISelector) => {
+    return state.firebase.auth.uid;
   });
 
   useEffect(() => {
@@ -73,6 +88,28 @@ const UserFeedback: React.FC = () => {
     }
   }, [users, params]);
 
+  const feedbackCollectionRef = firebase
+    .firestore()
+    .collection("users")
+    .doc(params.id)
+    .collection("feedback");
+
+  useEffect(() => {
+    if (!ratedUsers) return;
+    const isDocExists = ratedUsers.filter((userID) => userID === params.id);
+
+    if (isDocExists.length > 0) {
+      return setDocExists(true);
+    } else {
+      return setDocExists(false);
+    }
+  }, [params, ratedUsers]);
+
+  useEffect(() => {
+    setComments({ whatIsWrong: "", advice: "" });
+    setSkillsRating({});
+  }, [params]);
+
   const closeUserFeedback = () => history.push(routes.HOMEPAGE);
 
   const handleKeyUp = (e: React.KeyboardEvent) => {
@@ -81,28 +118,60 @@ const UserFeedback: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { id, value } = e.target;
-    setFeedback((prev) => ({ ...prev, [id]: value }));
+    setComments((prev) => ({ ...prev, [id]: value }));
   };
+
+  const submitFeedback = () => {
+    if (isDocExists) {
+      feedbackCollectionRef
+        .where("userID", "==", currentUserUID)
+        .get()
+        .then((snapshot) =>
+          snapshot.forEach((doc) =>
+            doc.ref.update({
+              userID: currentUserUID,
+              ...comments,
+              ...skillsRating,
+            })
+          )
+        );
+      history.push(routes.FEEDBACK_ACCEPTED);
+    } else {
+      feedbackCollectionRef.add({
+        userID: currentUserUID,
+        ...comments,
+        ...skillsRating,
+      });
+      firebase.updateProfile({
+        ratedUsers: !ratedUsers ? [params.id] : [...ratedUsers, params.id],
+      });
+      history.push(routes.FEEDBACK_ACCEPTED);
+    }
+  };
+
+  if (!isLoaded()) return <p>Loading...</p>;
 
   return (
     <MainContainer onKeyUp={handleKeyUp}>
       <Wrapper>
         <HeaderWrapper>
-          <UserContainer>
-            <UserAvatarContainer>
-              {selectedUser.avatarUrl && isLoaded() ? (
-                <UserAvatar src={selectedUser.avatarUrl} />
-              ) : (
-                <UserAvatar src={userAvatar} />
-              )}
-            </UserAvatarContainer>
-            <UserInfoContainer>
-              <UserName>{selectedUser.displayName}</UserName>
-              {selectedUser.proffesion && (
-                <UserTitle>{selectedUser.proffesion}</UserTitle>
-              )}
-            </UserInfoContainer>
-          </UserContainer>
+          {selectedUser && (
+            <UserContainer>
+              <UserAvatarContainer>
+                {selectedUser.avatarUrl ? (
+                  <UserAvatar src={selectedUser.avatarUrl} />
+                ) : (
+                  <UserAvatar src={userAvatar} />
+                )}
+              </UserAvatarContainer>
+              <UserInfoContainer>
+                <UserName>{selectedUser.displayName}</UserName>
+                {selectedUser.proffesion && (
+                  <UserTitle>{selectedUser.proffesion}</UserTitle>
+                )}
+              </UserInfoContainer>
+            </UserContainer>
+          )}
           <IconContainer>
             <CloseIcon
               src={closeIcon}
@@ -116,30 +185,14 @@ const UserFeedback: React.FC = () => {
           Personal skills and competences
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
-          {basicSkills.map((skill) => (
-            <SingleSkillContainer key={skill}>
-              <SingleSkillName>{skill}</SingleSkillName>
-              <StarsContainer>
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-              </StarsContainer>
-            </SingleSkillContainer>
-          ))}
-          {selectedUser.skills &&
+          {selectedUser &&
+            selectedUser.skills &&
             selectedUser.skills.map((skill) => (
-              <SingleSkillContainer key={skill}>
-                <SingleSkillName>{skill}</SingleSkillName>
-                <StarsContainer>
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                </StarsContainer>
-              </SingleSkillContainer>
+              <SingleSkill
+                key={skill}
+                skill={skill}
+                handleSkillRating={handleSkillsRating}
+              />
             ))}
         </PersonalSkillsContainer>
         <WriteFeedbackContainer>
@@ -156,7 +209,9 @@ const UserFeedback: React.FC = () => {
             id="advice"
             onChange={handleChange}
           />
-          <StyledButton>Submit</StyledButton>
+          <StyledButton onClick={() => submitFeedback()}>
+            {isDocExists ? "Update" : "Submit"}
+          </StyledButton>
         </WriteFeedbackContainer>
       </Wrapper>
     </MainContainer>

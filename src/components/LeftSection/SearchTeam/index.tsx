@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
 
 import searchIcon from "../../../images/search-icon.png";
 import searchIconActive from "../../../images/search-icon-active.png";

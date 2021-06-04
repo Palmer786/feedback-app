@@ -72,20 +72,6 @@ export const UserTitle = styled.p`
   margin: 0;
 `;
 
-export const IconContainer = styled.div`
-  height: 100%;
-  width: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const SettingsIcon = styled.img`
-  width: 70%;
-  height: 70%;
-  cursor: pointer;
-`;
-
 export const FeedbackHeader = styled.p`
   color: ${({ theme }) => theme.color.red};
   font-size: 2.4rem;
@@ -93,7 +79,7 @@ export const FeedbackHeader = styled.p`
 
 export const PersonalSkillsContainer = styled.div`
   width: 100%;
-  max-height: 45%;
+  max-height: 55%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -114,4 +100,16 @@ export const PersonalSkillsContainer = styled.div`
 export const PersonalSkillsHeader = styled.p`
   color: ${({ theme }) => theme.color.black};
   font-size: 1.6rem;
+`;
+
+export const TextFeedbackHeader = styled.p`
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.color.red};
+  margin: 3rem 0;
+`;
+
+export const TextFeedback = styled.p`
+  margin: 0;
+  font-size: 1.3rem;
+  color: ${({ theme }) => theme.color.gray};
 `;

@@ -3,6 +3,7 @@ interface ISelector {
   firestore: {
     ordered: {
       users: User[];
+      feedback: Feedback[];
     };
   };
   firebase: {
@@ -16,6 +17,7 @@ interface ISelector {
       avatarUrl: string;
       skills: string[];
       proffesion: string;
+      ratedUsers: string[];
     };
   };
 }
@@ -27,4 +29,11 @@ interface User {
   displayName: string;
   avatarUrl: string;
   skills: string[];
+}
+
+interface Feedback {
+  id: string;
+  whatIsFrong: string;
+  advice: string;
+  userID: string;
 }

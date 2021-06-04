@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useFirebase } from "react-redux-firebase";
 
 import * as routes from "../../constants/routes";
 import StyledInput from "../StyledInput";
 import googleIcon from "../../images/google-icon.png";
+import { basicSkills } from "../../constants/basicSkills";
 
 import {
   Wrapper,
@@ -50,10 +50,18 @@ const SignIn: React.FC = () => {
 
   const logInGoogle = async () => {
     try {
-      await firebase.login({
+      const user = await firebase.login({
         provider: "google",
         type: "popup",
       });
+
+      // @ts-ignore
+      if (!user.profile.skills) {
+        await firebase.updateProfile({
+          skills: basicSkills,
+        });
+      }
+
       history.push(routes.HOMEPAGE);
     } catch (e) {
       alert(e.message);

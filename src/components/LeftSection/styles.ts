@@ -22,6 +22,7 @@ export const LogoContainer = styled.div`
 export const Logo = styled.img`
   height: 64px;
   user-select: none;
+  cursor: pointer;
 `;
 
 export const ProfileInfoWrapper = styled.div`

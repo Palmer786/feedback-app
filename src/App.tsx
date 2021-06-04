@@ -11,6 +11,8 @@ import Homepage from "./components/Homepage";
 import UserFeedback from "./components/UserFeedback";
 import MyProfile from "./components/MyProfile";
 import ProfileSettings from "./components/ProfileSettings";
+import FeedbackAccepted from "./components/FeedbackAccepted";
+import FeedbackDetails from "./components/FeedbackDetails";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -50,8 +52,16 @@ const App: React.FC = () => {
             <Route exact path={routes.MY_PROFILE} component={MyProfile} />
             <Route path={routes.PROFILE_SETTINGS} component={ProfileSettings} />
             <Route
+              path={routes.FEEDBACK_ACCEPTED}
+              component={FeedbackAccepted}
+            />
+            <Route
               path={`${routes.USER_FEEDBACK}:id`}
               component={UserFeedback}
+            />
+            <Route
+              path={`${routes.FEEDBACK_DETAILS}:id`}
+              component={FeedbackDetails}
             />
           </Switch>
         </MainContainer>

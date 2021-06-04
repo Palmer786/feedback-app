@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useFirestoreConnect } from "react-redux-firebase";
+import { useFirebase, useFirestoreConnect } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 
 import * as routes from "../../constants/routes";
 import settingsIcon from "../../images/settings-icon.png";
-import star from "../../images/star.png";
 import userAvatar from "../../images/user-image.png";
-import { basicSkills } from "../../constants/basicSkills";
+import SingleSkillRating from "../SingleSkillRating";
+import MyFeedback from "./MyFeedback";
 
 import {
   UserAvatar,
@@ -22,25 +21,105 @@ import {
   FeedbackHeader,
   PersonalSkillsContainer,
   PersonalSkillsHeader,
-  SingleSkillContainer,
-  SingleSkillName,
-  StarIcon,
-  StarsContainer,
   UserInfoContainer,
   SettingsIcon,
   UserTitle,
 } from "./styles";
 
+interface ITotalRating {
+  [key: string]: number;
+}
+
+interface IFeedbackDocs {
+  [key: string]: number;
+}
+
 const UserFeedback: React.FC = () => {
   useFirestoreConnect([{ collection: "users" }]);
 
-  const { skills, displayName, avatarUrl, proffesion } = useSelector(
+  const [feedbackDocs, setFeedbackDocs] = useState<IFeedbackDocs[]>([]);
+
+  const [totalRating, setTotalRating] = useState<ITotalRating>({});
+
+  const firebase = useFirebase();
+
+  const uid = useSelector((state: ISelector) => state.firebase.auth.uid);
+
+  const { skills, displayName, avatarUrl, proffesion, isLoaded } = useSelector(
     (state: ISelector) => state.firebase.profile
   );
 
   const history = useHistory();
 
   const goToSettings = () => history.push(routes.PROFILE_SETTINGS);
+
+  const getAverageRating = (obj: { [key: string]: number }) => {
+    let averageRating = {};
+
+    for (const property in obj) {
+      averageRating = {
+        ...averageRating,
+        [property]: (
+          obj[property] /
+          feedbackDocs.reduce((acc, doc) => {
+            if (doc.hasOwnProperty(property)) {
+              return (acc = acc + 1);
+            }
+            return acc;
+          }, 0)
+        ).toFixed(1),
+      };
+    }
+
+    return averageRating;
+  };
+
+  useEffect(() => {
+    if (isLoaded) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(uid)
+        .collection("feedback")
+        .get()
+        .then((snapshot) =>
+          snapshot.docs.forEach((doc) =>
+            setFeedbackDocs((prev) => [
+              ...prev,
+              skills.reduce((map: any, current) => {
+                if (doc.data().hasOwnProperty(current)) {
+                  return { ...map, [current]: doc.data()[current] };
+                }
+                return { ...map };
+              }, {}),
+            ])
+          )
+        );
+    }
+  }, [isLoaded]);
+
+  useEffect(() => {
+    if (isLoaded && feedbackDocs.length > 0) {
+      const summedRating = feedbackDocs.reduce((acc, doc) => {
+        let docRating = {};
+
+        for (const property in doc) {
+          docRating = {
+            ...docRating,
+            [property]: acc[property]
+              ? acc[property] + doc[property]
+              : doc[property],
+          };
+        }
+
+        return { ...acc, ...docRating };
+      }, {});
+
+      const averageRating = getAverageRating(summedRating);
+
+      setTotalRating(averageRating);
+    }
+  }, [isLoaded, feedbackDocs]);
 
   return (
     <MainContainer>
@@ -67,37 +146,18 @@ const UserFeedback: React.FC = () => {
             />
           </IconContainer>
         </HeaderWrapper>
-        <FeedbackHeader>My feedback</FeedbackHeader>
+        <FeedbackHeader>Feedback summary</FeedbackHeader>
         <PersonalSkillsHeader>
           Personal skills and competences
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
-          {basicSkills.map((skill) => (
-            <SingleSkillContainer key={skill}>
-              <SingleSkillName>{skill}</SingleSkillName>
-              <StarsContainer>
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-                <StarIcon src={star} alt="star" />
-              </StarsContainer>
-            </SingleSkillContainer>
-          ))}
-          {skills &&
+          {isLoaded &&
+            skills &&
             skills.map((skill) => (
-              <SingleSkillContainer key={skill}>
-                <SingleSkillName>{skill}</SingleSkillName>
-                <StarsContainer>
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                  <StarIcon src={star} alt="star" />
-                </StarsContainer>
-              </SingleSkillContainer>
+              <SingleSkillRating skill={skill} rating={totalRating[skill]} />
             ))}
         </PersonalSkillsContainer>
+        <MyFeedback />
       </Wrapper>
     </MainContainer>
   );

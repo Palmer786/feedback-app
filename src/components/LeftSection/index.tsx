@@ -1,9 +1,7 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect } from "react";
 import { useFirebase } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import "firebase/storage";
 
 import logo from "../../images/logo.png";
@@ -36,20 +34,27 @@ const LeftSection: React.FC = () => {
 
   const signOut = async () => {
     try {
-      await firebase.logout();
       history.push(routes.SIGN_IN);
+      await firebase.logout();
     } catch (e) {
       alert(e.message);
     }
   };
 
-  if (isLoaded && isEmpty && history.location.pathname !== routes.SIGN_UP)
-    history.push(routes.SIGN_IN);
+  const goToHomepage = () => {
+    if (isLoaded && isEmpty) return;
+    history.push(routes.HOMEPAGE);
+  };
+
+  useEffect(() => {
+    if (isLoaded && isEmpty && history.location.pathname !== routes.SIGN_UP)
+      history.push(routes.SIGN_IN);
+  });
 
   return (
     <Wrapper>
       <LogoContainer>
-        <Logo src={logo} alt="logo" />
+        <Logo src={logo} alt="logo" onClick={() => goToHomepage()} />
       </LogoContainer>
 
       <ProfileInfoWrapper>

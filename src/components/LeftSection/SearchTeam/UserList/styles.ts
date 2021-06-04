@@ -56,4 +56,19 @@ export const UserName = styled.p`
   font-size: 1.6rem;
   color: white;
   margin-left: 14px;
+  width: calc(100% - 88px);
 `;
+
+export const RatedIconContainer = styled.div`
+  width: 32px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: flex-end;
+`
+
+export const RatedIcon = styled.img`
+  width: 18px;
+  height: 18px;
+`

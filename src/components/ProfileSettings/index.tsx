@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
-import styled from "styled-components";
 import StyledInput from "../StyledInput";
+import { useHistory } from "react-router-dom";
 import "firebase/storage";
 
 import userAvatar from "../../images/user-image.png";
 import arrowIcon from "../../images/arrow-icon.png";
-import { useHistory } from "react-router-dom";
 import * as routes from "../../constants/routes";
 import clearIcon from "../../images/clear-icon.png";
 
@@ -52,7 +51,7 @@ const ProfileSettings: React.FC = () => {
 
   const storageRef = firebase.storage().ref().child(`${uid}`);
 
-  const { skills, avatarUrl, displayName, proffesion } = useSelector(
+  const { skills, avatarUrl, displayName, proffesion, isLoaded } = useSelector(
     (state: ISelector) => state.firebase.profile
   );
 
@@ -62,8 +61,8 @@ const ProfileSettings: React.FC = () => {
   };
 
   const addNewSkill = () => {
-    if (newSkill.length < 3)
-      return alert("Skill should be at least 3 characters");
+    if (newSkill.length < 2)
+      return alert("Skill should be at least 2 characters");
     if (
       skills.filter(
         (skill) => skill.toLocaleLowerCase() === newSkill.toLocaleLowerCase()
@@ -98,7 +97,7 @@ const ProfileSettings: React.FC = () => {
 
   const updateProfile = () => {
     firebase.updateProfile({
-      newProffesion,
+      proffesion: newProffesion,
     });
   };
 
@@ -116,6 +115,8 @@ const ProfileSettings: React.FC = () => {
   const handleKeyUp = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") return addNewSkill();
   };
+
+  if (!isLoaded) return <h1>Loading...</h1>;
 
   return (
     <MainContainer>
@@ -171,7 +172,11 @@ const ProfileSettings: React.FC = () => {
 
         <StyledH4>Skills</StyledH4>
         <SkillsContainer>
-          {skills.length > 0 ? (
+          {(isLoaded && !skills) || (isLoaded && !skills.length) ? (
+            <SingleSkillContainer>
+              <SingleSkillTitle>Add your first skill!</SingleSkillTitle>
+            </SingleSkillContainer>
+          ) : (
             skills.map((skill) => (
               <SingleSkillContainer key={skill}>
                 <SingleSkillTitle>{skill}</SingleSkillTitle>
@@ -182,10 +187,6 @@ const ProfileSettings: React.FC = () => {
                 />
               </SingleSkillContainer>
             ))
-          ) : (
-            <SingleSkillContainer>
-              <SingleSkillTitle>Add your first skill!</SingleSkillTitle>
-            </SingleSkillContainer>
           )}
         </SkillsContainer>
 

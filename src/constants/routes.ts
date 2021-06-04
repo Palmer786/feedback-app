@@ -9,3 +9,7 @@ export const USER_FEEDBACK = "/user/";
 export const MY_PROFILE = "/myprofile";
 
 export const PROFILE_SETTINGS = "/myprofile/settings";
+
+export const FEEDBACK_ACCEPTED = "/accepted";
+
+export const FEEDBACK_DETAILS = "/feedback/";
