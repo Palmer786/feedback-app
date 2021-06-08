@@ -29,8 +29,6 @@ const Homepage: React.FC = () => {
     return state.firebase.profile;
   });
 
-  if (!isLoaded) return <p>Loading...</p>;
-
   if (isLoaded && isEmpty) history.push(routes.SIGN_IN);
 
   if (isLoaded && users && users.length - 1 === ratedUsers.length) {

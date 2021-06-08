@@ -23,6 +23,7 @@ import {
   StyledLink,
   StyledSpan,
 } from "./styles";
+import Loading from "../Loading";
 
 const LeftSection: React.FC = () => {
   const firebase = useFirebase();
@@ -56,31 +57,34 @@ const LeftSection: React.FC = () => {
       <LogoContainer>
         <Logo src={logo} alt="logo" onClick={() => goToHomepage()} />
       </LogoContainer>
+      {!isLoaded ? (
+        <Loading />
+      ) : (
+        <ProfileInfoWrapper>
+          <AvatarContainer>
+            {avatarUrl ? (
+              <Avatar src={avatarUrl} alt="avatar" />
+            ) : (
+              <Avatar src={userAvatar} alt="avatar" />
+            )}
+          </AvatarContainer>
 
-      <ProfileInfoWrapper>
-        <AvatarContainer>
-          {avatarUrl ? (
-            <Avatar src={avatarUrl} alt="avatar" />
-          ) : (
-            <Avatar src={userAvatar} alt="avatar" />
-          )}
-        </AvatarContainer>
-
-        <ProfileInfoContainer>
-          {displayName ? (
-            <>
-              <FullNameP to={routes.MY_PROFILE}>{displayName}</FullNameP>
-              <LogOutP onClick={() => signOut()}>Log out</LogOutP>
-            </>
-          ) : (
-            <AccountOptions>
-              <StyledLink to={routes.SIGN_IN}>Sign in</StyledLink>
-              <StyledSpan>/</StyledSpan>
-              <StyledLink to={routes.SIGN_UP}>Join</StyledLink>
-            </AccountOptions>
-          )}
-        </ProfileInfoContainer>
-      </ProfileInfoWrapper>
+          <ProfileInfoContainer>
+            {displayName ? (
+              <>
+                <FullNameP to={routes.MY_PROFILE}>{displayName}</FullNameP>
+                <LogOutP onClick={() => signOut()}>Log out</LogOutP>
+              </>
+            ) : (
+              <AccountOptions>
+                <StyledLink to={routes.SIGN_IN}>Sign in</StyledLink>
+                <StyledSpan>/</StyledSpan>
+                <StyledLink to={routes.SIGN_UP}>Join</StyledLink>
+              </AccountOptions>
+            )}
+          </ProfileInfoContainer>
+        </ProfileInfoWrapper>
+      )}
 
       {displayName && <SearchTeam />}
     </Wrapper>

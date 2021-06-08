@@ -32,6 +32,15 @@ import {
   WriteFeedbackContainer,
   CloseIcon,
 } from "./styles";
+import Loading from "../Loading";
+import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
+
+interface ISelectedUser {
+  displayName: string;
+  avatarUrl: string;
+  skills: string[];
+  proffesion: string;
+}
 
 const UserFeedback: React.FC = () => {
   const [comments, setComments] = useState({
@@ -39,12 +48,7 @@ const UserFeedback: React.FC = () => {
     advice: "",
   });
 
-  const [selectedUser, setSelectedUser] = useState<{
-    displayName: string;
-    avatarUrl: string;
-    skills: string[];
-    proffesion: string;
-  }>({
+  const [selectedUser, setSelectedUser] = useState<ISelectedUser>({
     displayName: "",
     avatarUrl: "",
     skills: [],
@@ -149,8 +153,6 @@ const UserFeedback: React.FC = () => {
     }
   };
 
-  if (!isLoaded()) return <p>Loading...</p>;
-
   return (
     <MainContainer onKeyUp={handleKeyUp}>
       <Wrapper>
@@ -158,7 +160,9 @@ const UserFeedback: React.FC = () => {
           {selectedUser && (
             <UserContainer>
               <UserAvatarContainer>
-                {selectedUser.avatarUrl ? (
+                {selectedUser.skills.length === 0 ? (
+                  <AvatarLoadingSpinner />
+                ) : selectedUser.avatarUrl ? (
                   <UserAvatar src={selectedUser.avatarUrl} />
                 ) : (
                   <UserAvatar src={userAvatar} />
@@ -185,15 +189,17 @@ const UserFeedback: React.FC = () => {
           Personal skills and competences
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
-          {selectedUser &&
-            selectedUser.skills &&
+          {selectedUser.skills.length === 0 ? (
+            <Loading />
+          ) : (
             selectedUser.skills.map((skill) => (
               <SingleSkill
                 key={skill}
                 skill={skill}
                 handleSkillRating={handleSkillsRating}
               />
-            ))}
+            ))
+          )}
         </PersonalSkillsContainer>
         <WriteFeedbackContainer>
           <WriteFeedbackHeader>Write a feedback</WriteFeedbackHeader>

@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import * as routes from "../../constants/routes";
 import settingsIcon from "../../images/settings-icon.png";
 import userAvatar from "../../images/user-image.png";
+import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
+import Loading from "../Loading";
 import SingleSkillRating from "../SingleSkillRating";
 import MyFeedback from "./MyFeedback";
 
@@ -127,7 +129,9 @@ const UserFeedback: React.FC = () => {
         <HeaderWrapper>
           <UserContainer>
             <UserAvatarContainer>
-              {avatarUrl ? (
+              {!isLoaded ? (
+                <AvatarLoadingSpinner />
+              ) : avatarUrl ? (
                 <UserAvatar src={avatarUrl} />
               ) : (
                 <UserAvatar src={userAvatar} />
@@ -151,11 +155,14 @@ const UserFeedback: React.FC = () => {
           Personal skills and competences
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
-          {isLoaded &&
+          {!isLoaded ? (
+            <Loading />
+          ) : (
             skills &&
             skills.map((skill) => (
               <SingleSkillRating skill={skill} rating={totalRating[skill]} />
-            ))}
+            ))
+          )}
         </PersonalSkillsContainer>
         <MyFeedback />
       </Wrapper>

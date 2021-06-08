@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useFirebase } from "react-redux-firebase";
+import {isLoaded, useFirebase } from "react-redux-firebase";
 
 import * as routes from "../../../../constants/routes";
 import defaultAvatar from "../../../../images/user-image.png";
+import AvatarLoadingSpinner from "../../../AvatarLoadingSpinner";
 
 import {
   UserAvatar,

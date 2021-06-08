@@ -42,7 +42,7 @@ export const StarIcon = styled(FaStar)<{ rating: number; ratingvalue: number }>`
   width: 14%;
   height: 42%;
   color: ${({ theme, rating, ratingvalue }) =>
-    ratingvalue - 0.2 <= rating ? theme.color.red : rating === 0 ? theme.color.lighterGray : "white"};
+    ratingvalue - 0.2 <= rating ? theme.color.red : theme.color.lighterGray};
   background: -webkit-linear-gradient(#eee, #333);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

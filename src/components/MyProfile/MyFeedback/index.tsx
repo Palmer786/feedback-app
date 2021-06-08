@@ -1,9 +1,6 @@
 import React from "react";
-import {
-  isLoaded,
-  useFirestoreConnect,
-} from "react-redux-firebase";
-import { useSelector } from "react-redux";
+import { isLoaded, useFirestoreConnect } from "react-redux-firebase";
+import { useDispatch, useSelector } from "react-redux";
 
 import SingleFeedback from "./SingleFeedback";
 
@@ -13,10 +10,12 @@ import {
   FeedbacksWrapper,
   MainWrapper,
 } from "./styles";
+import Loading from "../../Loading";
 
 const MyFeedback: React.FC = () => {
-
   const uid = useSelector((state: ISelector) => state.firebase.auth.uid);
+
+  const dispatch = useDispatch();
 
   useFirestoreConnect(
     uid && [
@@ -33,20 +32,26 @@ const MyFeedback: React.FC = () => {
     (state: ISelector) => state.firestore.ordered.feedback
   );
 
-  if (!isLoaded(uid)) return <p>loading...</p>;
+  if (!isLoaded(uid)) dispatch({ type: "ON" });
+  if (isLoaded(uid)) dispatch({ type: "OFF" });
 
   return (
     <MainWrapper>
       <FeedbacksHeader>
         Feedbacks {}
         <FeedbacksNumber>
-          ({isLoaded(feedbacks) && feedbacks.length})
+          {isLoaded(feedbacks) && `(${feedbacks.length})`}
         </FeedbacksNumber>
       </FeedbacksHeader>
-      <FeedbacksWrapper>
-        {isLoaded(feedbacks) &&
-          feedbacks.map((doc) => <SingleFeedback key={doc.id} doc={doc} />)}
-      </FeedbacksWrapper>
+      {!isLoaded(feedbacks) ? (
+        <Loading />
+      ) : (
+        <FeedbacksWrapper>
+          {feedbacks.map((doc) => (
+            <SingleFeedback key={doc.id} doc={doc} />
+          ))}
+        </FeedbacksWrapper>
+      )}
     </MainWrapper>
   );
 };

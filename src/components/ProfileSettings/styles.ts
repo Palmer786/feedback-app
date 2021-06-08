@@ -112,6 +112,7 @@ export const StyledH4 = styled.h4`
 export const InputWithButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 2rem;
 `;
 
 export const StyledFileInput = styled.input`

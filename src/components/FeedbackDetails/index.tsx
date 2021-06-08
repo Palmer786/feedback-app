@@ -22,6 +22,7 @@ import {
   TextFeedbackHeader,
   TextFeedback,
 } from "./styles";
+import Loading from "../Loading";
 
 interface IUser {
   proffesion: string;
@@ -88,33 +89,41 @@ const FeedbackDetails = () => {
     <MainContainer>
       <Wrapper>
         <HeaderWrapper>
-          <UserContainer>
-            <UserAvatarContainer>
-              {avatarUrl ? (
-                <UserAvatar src={avatarUrl} />
-              ) : (
-                <UserAvatar src={defaultAvatar} />
+          {!isLoaded(skills) ? (
+            <Loading />
+          ) : (
+            <>
+              <UserContainer>
+                <UserAvatarContainer>
+                  {avatarUrl ? (
+                    <UserAvatar src={avatarUrl} />
+                  ) : (
+                    <UserAvatar src={defaultAvatar} />
+                  )}
+                </UserAvatarContainer>
+                <UserInfoContainer>
+                  <UserName>{displayName}</UserName>
+                  {proffesion && <UserTitle>{proffesion}</UserTitle>}
+                </UserInfoContainer>
+              </UserContainer>
+              {user && (
+                <UserContainer>
+                  <UserAvatarContainer>
+                    {user.avatarUrl ? (
+                      <UserAvatar src={user.avatarUrl} />
+                    ) : (
+                      <UserAvatar src={defaultAvatar} />
+                    )}
+                  </UserAvatarContainer>
+                  <UserInfoContainer>
+                    <UserName>{user.displayName}</UserName>
+                    {user.proffesion && (
+                      <UserTitle>{user.proffesion}</UserTitle>
+                    )}
+                  </UserInfoContainer>
+                </UserContainer>
               )}
-            </UserAvatarContainer>
-            <UserInfoContainer>
-              <UserName>{displayName}</UserName>
-              {proffesion && <UserTitle>{proffesion}</UserTitle>}
-            </UserInfoContainer>
-          </UserContainer>
-          {user && (
-            <UserContainer>
-              <UserAvatarContainer>
-                {user.avatarUrl ? (
-                  <UserAvatar src={user.avatarUrl} />
-                ) : (
-                  <UserAvatar src={defaultAvatar} />
-                )}
-              </UserAvatarContainer>
-              <UserInfoContainer>
-                <UserName>{user.displayName}</UserName>
-                {user.proffesion && <UserTitle>{user.proffesion}</UserTitle>}
-              </UserInfoContainer>
-            </UserContainer>
+            </>
           )}
         </HeaderWrapper>
         <FeedbackHeader>Skills rating</FeedbackHeader>
@@ -122,14 +131,17 @@ const FeedbackDetails = () => {
           Personal skills and competences
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
-          {isLoaded(skills) &&
+          {!isLoaded(skills) ? (
+            <Loading />
+          ) : (
             skills &&
             skills.map((skill) => (
               <SingleSkillRating
                 skill={skill}
                 rating={feedback[skill] as number}
               />
-            ))}
+            ))
+          )}
         </PersonalSkillsContainer>
         <TextFeedbackHeader>What is wrong</TextFeedbackHeader>
         <TextFeedback>{feedback.whatIsWrong}</TextFeedback>

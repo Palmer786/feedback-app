@@ -180,11 +180,13 @@ const ProfileSettings: React.FC = () => {
             skills.map((skill) => (
               <SingleSkillContainer key={skill}>
                 <SingleSkillTitle>{skill}</SingleSkillTitle>
-                <SingleSkillImage
-                  src={clearIcon}
-                  alt="x"
-                  onClick={() => removeSingleSkill(skill)}
-                />
+                {skills.length > 1 && (
+                  <SingleSkillImage
+                    src={clearIcon}
+                    alt="x"
+                    onClick={() => removeSingleSkill(skill)}
+                  />
+                )}
               </SingleSkillContainer>
             ))
           )}
