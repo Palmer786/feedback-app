@@ -37,6 +37,8 @@ interface IFeedbackDocs {
 }
 
 const UserFeedback: React.FC = () => {
+  const [isLoading, setLoading] = useState(true);
+
   useFirestoreConnect([{ collection: "users" }]);
 
   const [feedbackDocs, setFeedbackDocs] = useState<IFeedbackDocs[]>([]);
@@ -49,6 +51,10 @@ const UserFeedback: React.FC = () => {
 
   const { skills, displayName, avatarUrl, proffesion, isLoaded } = useSelector(
     (state: ISelector) => state.firebase.profile
+  );
+
+  const feedback = useSelector(
+    (state: ISelector) => state.firestore.ordered.feedback
   );
 
   const history = useHistory();
@@ -75,6 +81,15 @@ const UserFeedback: React.FC = () => {
 
     return averageRating;
   };
+
+  useEffect(() => {
+    if (!feedbackDocs.length) {
+      if (isLoaded && feedback && !feedback.length) return setLoading(false);
+      return setLoading(true);
+    } else {
+      return setLoading(false);
+    }
+  }, [feedbackDocs, feedback, isLoaded]);
 
   useEffect(() => {
     if (isLoaded) {
@@ -155,7 +170,7 @@ const UserFeedback: React.FC = () => {
           Personal skills and competences
         </PersonalSkillsHeader>
         <PersonalSkillsContainer>
-          {!isLoaded ? (
+          {!isLoaded || isLoading ? (
             <Loading />
           ) : (
             skills &&

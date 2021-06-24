@@ -19,7 +19,7 @@ import {
   UserAvatarContainer,
   UserAvatar,
   SingleSkillContainer,
-  SettingsIcon,
+  BackIcon,
   SingleSkillTitle,
   UserName,
   HeaderWrapper,
@@ -31,6 +31,7 @@ import {
   InputWithButtonWrapper,
   StyledFileInput,
 } from "./styles";
+import Loading from "../Loading";
 
 const ProfileSettings: React.FC = () => {
   const [newSkill, setNewSkill] = useState("");
@@ -116,7 +117,7 @@ const ProfileSettings: React.FC = () => {
     if (e.key === "Enter") return addNewSkill();
   };
 
-  if (!isLoaded) return <h1>Loading...</h1>;
+  if (!isLoaded) return <Loading />;
 
   return (
     <MainContainer>
@@ -144,7 +145,7 @@ const ProfileSettings: React.FC = () => {
           </UserContainer>
 
           <IconContainer>
-            <SettingsIcon
+            <BackIcon
               src={arrowIcon}
               alt="settings"
               onClick={() => backToMyProfile()}

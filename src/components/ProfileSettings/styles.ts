@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../constants/device";
 
 export const MainContainer = styled.div`
   min-height: 840px;
@@ -7,6 +8,10 @@ export const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${device.tablet} {
+    width: 100%;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -14,6 +19,18 @@ export const Wrapper = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
+
+  @media ${device.laptopL} {
+    width: 65%;
+  }
+
+  @media ${device.laptop} {
+    width: 80%;
+  }
+
+  @media ${device.tablet} {
+    width: 90%;
+  }
 `;
 
 export const HeaderWrapper = styled.div`
@@ -40,15 +57,26 @@ export const StyledButton = styled.button`
     background: ${({ theme }) => theme.color.lightRed};
     transition: 0.1s background;
   }
+  
+  @media ${device.mobileL} {
+    font-size: 1.4rem;
+  }
+
+  @media ${device.mobileM} {
+   width: 20%;
+  }
+
+  @media ${device.mobileS} {
+    width: 25%;
+  }
 `;
 
 export const UserContainer = styled.div`
-  width: 40%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
 `;
 
 export const UserAvatarContainer = styled.div`
@@ -58,6 +86,17 @@ export const UserAvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 6px;
+
+  @media ${device.laptopL} {
+    width: 72px;
+    height: 72px;
+  }
+
+  @media ${device.laptop} {
+    width: 64px;
+    height: 64px;
+  }
 `;
 
 export const UserAvatar = styled.img`
@@ -81,25 +120,51 @@ export const UserName = styled.p`
   color: ${({ theme }) => theme.color.black};
   margin: 0;
   font-weight: 500;
+
+  @media ${device.laptopL} {
+    font-size: 1.8rem;
+  }
+
+  @media ${device.laptop} {
+    font-size: 1.6rem;
+  }
 `;
 
 export const UserTitle = styled.p`
   font-size: 1.4rem;
   color: #7a7e81;
   margin: 0;
+
+  @media ${device.laptopL} {
+    font-size: 1.3rem;
+  }
+
+  @media ${device.laptop} {
+    font-size: 1.2rem;
+  }
 `;
 
 export const IconContainer = styled.div`
-  height: 100%;
-  width: 15%;
+  height: 80px;
+  width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${device.laptopL} {
+    width: 72px;
+    height: 72px;
+  }
+
+  @media ${device.mobileL} {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
-export const SettingsIcon = styled.img`
-  width: 70%;
-  height: 70%;
+export const BackIcon = styled.img`
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 `;
 
@@ -132,6 +197,20 @@ export const StyledFileInput = styled.input`
     :hover {
       background: ${({ theme }) => theme.color.lightRed};
       transition: 0.1s background;
+    }
+
+    @media ${device.laptop} {
+      width: 30%;
+    }
+
+    @media ${device.mobileL} {
+      font-size: 1.4rem;
+      width: 35%;
+    }
+    
+    @media ${device.mobileS} {
+      font-size: 1.3rem;
+      width: 40%;
     }
   }
 `;
@@ -173,6 +252,10 @@ export const SingleSkillTitle = styled.p`
   color: ${({ theme }) => theme.color.red};
   font-weight: 500;
   margin: 0 1rem;
+
+  @media ${device.mobileL} {
+    font-size: 1.4rem;
+  }
 `;
 
 export const SingleSkillImage = styled.img`

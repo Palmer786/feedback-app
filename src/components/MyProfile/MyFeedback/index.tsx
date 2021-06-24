@@ -1,6 +1,6 @@
 import React from "react";
 import { isLoaded, useFirestoreConnect } from "react-redux-firebase";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import SingleFeedback from "./SingleFeedback";
 
@@ -14,8 +14,6 @@ import Loading from "../../Loading";
 
 const MyFeedback: React.FC = () => {
   const uid = useSelector((state: ISelector) => state.firebase.auth.uid);
-
-  const dispatch = useDispatch();
 
   useFirestoreConnect(
     uid && [
@@ -31,9 +29,6 @@ const MyFeedback: React.FC = () => {
   const feedbacks = useSelector(
     (state: ISelector) => state.firestore.ordered.feedback
   );
-
-  if (!isLoaded(uid)) dispatch({ type: "ON" });
-  if (isLoaded(uid)) dispatch({ type: "OFF" });
 
   return (
     <MainWrapper>

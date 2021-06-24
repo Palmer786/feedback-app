@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { device } from "../../constants/device";
 
 export const Wrapper = styled.div`
   width: 75%;
@@ -7,6 +8,20 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media ${device.laptopL} {
+    width: 70%;
+  }
+
+  @media ${device.laptop} {
+    width: 65%;
+  }
+
+  @media ${device.tablet} {
+    width: 100%;
+    min-height: auto;
+    height: 80vh;
+  }
 `;
 
 export const ContentBox = styled.div`
@@ -15,6 +30,18 @@ export const ContentBox = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
+
+  @media ${device.laptopL} {
+    width: 45%;
+  }
+
+  @media ${device.laptop} {
+    width: 60%;
+  }
+
+  @media ${device.tablet} {
+    width: 80%;
+  }
 `;
 
 export const ImageContainer = styled.div`
@@ -33,12 +60,20 @@ export const StyledImg = styled.img`
 
 export const StyledH4 = styled.h4`
   color: ${({ theme }) => theme.color.gray};
-  font-size: 5.0rem;
+  font-size: 5rem;
   font-weight: 300;
   margin: 0;
+
+  @media ${device.tablet} {
+    font-size: 4rem;
+  }
 `;
 
 export const StyledP = styled.p`
   color: ${({ theme }) => theme.color.lightGray};
   font-size: 1.8rem;
+
+  @media ${device.tablet} {
+    font-size: 1.6rem;
+  }
 `;

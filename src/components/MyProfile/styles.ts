@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../constants/device";
 
 export const MainContainer = styled.div`
   min-height: 840px;
@@ -7,6 +8,10 @@ export const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${device.tablet} {
+    width: 100%;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -14,6 +19,18 @@ export const Wrapper = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
+
+  @media ${device.laptopL} {
+    width: 65%;
+  }
+
+  @media ${device.laptop} {
+    width: 80%;
+  }
+  
+  @media ${device.mobileL} {
+    width: 90%;
+  }
 `;
 
 export const HeaderWrapper = styled.div`
@@ -26,12 +43,11 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const UserContainer = styled.div`
-  width: 40%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
 `;
 
 export const UserAvatarContainer = styled.div`
@@ -41,6 +57,17 @@ export const UserAvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 6px;
+
+  @media ${device.laptopL} {
+    width: 72px;
+    height: 72px;
+  }
+
+  @media ${device.mobileL} {
+    width: 64px;
+    height: 64px;
+  }
 `;
 
 export const UserAvatar = styled.img`
@@ -64,25 +91,51 @@ export const UserName = styled.p`
   color: ${({ theme }) => theme.color.black};
   margin: 0;
   font-weight: 500;
+
+  @media ${device.laptopL} {
+    font-size: 1.8rem;
+  }
+
+  @media ${device.laptop} {
+    font-size: 1.6rem;
+  }
 `;
 
 export const UserTitle = styled.p`
   font-size: 1.4rem;
   color: #7a7e81;
   margin: 0;
+
+  @media ${device.laptopL} {
+    font-size: 1.3rem;
+  }
+
+  @media ${device.laptop} {
+    font-size: 1.2rem;
+  }
 `;
 
 export const IconContainer = styled.div`
-  height: 100%;
-  width: 15%;
+  height: 80px;
+  width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media ${device.laptopL} {
+    width: 72px;
+    height: 72px;
+  }
+
+  @media ${device.mobileL} {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 export const SettingsIcon = styled.img`
-  width: 70%;
-  height: 70%;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 `;
 

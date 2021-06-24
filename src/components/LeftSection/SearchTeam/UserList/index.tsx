@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isLoaded, useFirestoreConnect } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
 
@@ -16,6 +16,7 @@ import {
   RatedIcon,
   RatedIconContainer,
 } from "./styles";
+import { toggleMenuOpen } from "../../../actions/menu";
 
 interface Props {
   query: string;
@@ -23,6 +24,8 @@ interface Props {
 
 const UserList: React.FC<Props> = ({ query }) => {
   useFirestoreConnect([{ collection: "users" }]);
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -38,8 +41,10 @@ const UserList: React.FC<Props> = ({ query }) => {
     return state.firebase.auth.uid;
   });
 
-  const handleOnClick = (id: string) =>
+  const handleOnClick = (id: string) => {
+    dispatch(toggleMenuOpen);
     history.push(`${routes.USER_FEEDBACK}${id}`);
+  };
 
   if (!isLoaded()) return <p>Loading...</p>;
 

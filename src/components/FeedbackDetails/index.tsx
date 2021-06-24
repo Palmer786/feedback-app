@@ -23,6 +23,7 @@ import {
   TextFeedback,
 } from "./styles";
 import Loading from "../Loading";
+import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
 
 interface IUser {
   proffesion: string;
@@ -106,7 +107,7 @@ const FeedbackDetails = () => {
                   {proffesion && <UserTitle>{proffesion}</UserTitle>}
                 </UserInfoContainer>
               </UserContainer>
-              {user && (
+              {user && !user.displayName ? <AvatarLoadingSpinner /> : (
                 <UserContainer>
                   <UserAvatarContainer>
                     {user.avatarUrl ? (

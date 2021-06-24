@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+import { device } from "../../constants/device";
+
+export const Wrapper = styled.div<{ isMenuOpen: boolean }>`
   width: 25%;
   min-height: 840px;
   height: 100vh;
@@ -9,6 +11,20 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media ${device.laptopL} {
+    width: 30%;
+  }
+
+  @media ${device.laptop} {
+    width: 35%;
+  }
+
+  @media ${device.tablet} {
+    display: ${({ isMenuOpen }) => (isMenuOpen ? "block-inline" : "none")};
+    width: 100%;
+    position: absolute;
+  }
 `;
 
 export const LogoContainer = styled.div`
@@ -27,10 +43,29 @@ export const Logo = styled.img`
 
 export const ProfileInfoWrapper = styled.div`
   height: 80px;
-  width: 65%;
+  min-width: 65%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+
+  @media ${device.laptopL} {
+    max-width: 280px;
+  }
+
+  @media ${device.laptop} {
+    max-width: 210px;
+  }
+
+  @media ${device.mobileL} {
+    min-width: 75%;
+  }
+
+  @media ${device.mobileM} {
+    min-width: 80%;
+  }
+
+  @media ${device.mobileS} {
+    min-width: 90%;
+  }
 `;
 
 export const AvatarContainer = styled.div`
@@ -46,6 +81,10 @@ export const Avatar = styled.img`
   background: white;
   width: 75%;
   height: 75%;
+
+  @media ${device.laptop} {
+    width: 80%;
+  }
 `;
 
 export const ProfileInfoContainer = styled.div`
@@ -57,6 +96,7 @@ export const ProfileInfoContainer = styled.div`
 `;
 
 export const FullNameP = styled(Link)`
+  width: 90px;
   color: white;
   font-size: 1.6rem;
   margin: 0;
@@ -68,6 +108,7 @@ export const FullNameP = styled(Link)`
 `;
 
 export const LogOutP = styled.p`
+  width: 50px;
   color: white;
   margin: 0;
   font-size: 1.2rem;

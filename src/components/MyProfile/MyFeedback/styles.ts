@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../../constants/device";
 
 export const MainWrapper = styled.div`
   width: 100%;
@@ -34,5 +35,9 @@ export const FeedbacksWrapper = styled.div`
 
   ::-webkit-scrollbar-thumb {
     background: ${({ theme }) => theme.color.lightGray};
+  }
+
+  @media ${device.mobileS} {
+    grid-template-columns: 1fr;
   }
 `;

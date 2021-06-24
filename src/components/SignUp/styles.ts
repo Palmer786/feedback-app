@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { device } from "../../constants/device";
 
 export const Wrapper = styled.div`
   width: 75%;
@@ -8,6 +9,14 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media ${device.tablet} {
+    width: 100%;
+  }
+
+  @media ${device.mobileL} {
+    min-height: auto;
+  }
 `;
 
 export const ContentBox = styled.div`
@@ -17,12 +26,29 @@ export const ContentBox = styled.div`
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
+
+  @media ${device.laptopL} {
+    width: 80%;
+  }
+
+  @media ${device.laptop} {
+    width: 100%;
+  }
 `;
 
 export const Header = styled.h1`
   font-weight: 300;
   color: ${({ theme }) => theme.color.gray};
   font-size: 4.8rem;
+
+  @media ${device.laptop} {
+    font-size: 4rem;
+    text-align: center;
+  }
+
+  @media ${device.mobileS} {
+    font-size: 3.6rem;
+  }
 `;
 
 export const ShortInputWrapper = styled.div`
@@ -39,6 +65,12 @@ export const LinkBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+
+  @media ${device.mobileL} {
+    width: 90%;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -49,6 +81,10 @@ export const StyledLink = styled(Link)`
 
   :hover {
     text-decoration: underline;
+  }
+
+  @media ${device.laptop} {
+    font-size: 1.2rem;
   }
 `;
 
@@ -67,5 +103,20 @@ export const PrimaryButton = styled.button`
   :hover {
     background: ${({ theme }) => theme.color.lightRed};
     transition: 0.1s background;
+  }
+
+  @media ${device.laptop} {
+    height: 50px;
+    width: 32%;
+    font-size: 1.2rem;
+  }
+
+  @media ${device.mobileL} {
+    height: 42px;
+    width: 44%;
+  }
+
+  @media ${device.mobileS} {
+    width: 48%;
   }
 `;

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useFirebase } from "react-redux-firebase";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "firebase/storage";
 
 import logo from "../../images/logo.png";
 import userAvatar from "../../images/user-image.png";
 import * as routes from "../../constants/routes";
 import SearchTeam from "./SearchTeam";
+import { toggleMenuOpen } from "../actions/menu";
 
 import {
   Wrapper,
@@ -23,19 +24,28 @@ import {
   StyledLink,
   StyledSpan,
 } from "./styles";
+
 import Loading from "../Loading";
 
 const LeftSection: React.FC = () => {
   const firebase = useFirebase();
+
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const { displayName, avatarUrl, isLoaded, isEmpty } = useSelector(
     (state: ISelector) => state.firebase.profile
   );
 
+  const isMenuOpen = useSelector((state: ISelector) => {
+    return state.isMenuOpen;
+  });
+
   const signOut = async () => {
     try {
       history.push(routes.SIGN_IN);
+      dispatch(toggleMenuOpen);
       await firebase.logout();
     } catch (e) {
       alert(e.message);
@@ -44,6 +54,7 @@ const LeftSection: React.FC = () => {
 
   const goToHomepage = () => {
     if (isLoaded && isEmpty) return;
+    dispatch(toggleMenuOpen);
     history.push(routes.HOMEPAGE);
   };
 
@@ -53,7 +64,7 @@ const LeftSection: React.FC = () => {
   });
 
   return (
-    <Wrapper>
+    <Wrapper isMenuOpen={isMenuOpen}>
       <LogoContainer>
         <Logo src={logo} alt="logo" onClick={() => goToHomepage()} />
       </LogoContainer>
@@ -72,20 +83,34 @@ const LeftSection: React.FC = () => {
           <ProfileInfoContainer>
             {displayName ? (
               <>
-                <FullNameP to={routes.MY_PROFILE}>{displayName}</FullNameP>
+                <FullNameP
+                  to={routes.MY_PROFILE}
+                  onClick={() => dispatch(toggleMenuOpen)}
+                >
+                  {displayName}
+                </FullNameP>
                 <LogOutP onClick={() => signOut()}>Log out</LogOutP>
               </>
             ) : (
               <AccountOptions>
-                <StyledLink to={routes.SIGN_IN}>Sign in</StyledLink>
+                <StyledLink
+                  to={routes.SIGN_IN}
+                  onClick={() => dispatch(toggleMenuOpen)}
+                >
+                  Sign in
+                </StyledLink>
                 <StyledSpan>/</StyledSpan>
-                <StyledLink to={routes.SIGN_UP}>Join</StyledLink>
+                <StyledLink
+                  to={routes.SIGN_UP}
+                  onClick={() => dispatch(toggleMenuOpen)}
+                >
+                  Join
+                </StyledLink>
               </AccountOptions>
             )}
           </ProfileInfoContainer>
         </ProfileInfoWrapper>
       )}
-
       {displayName && <SearchTeam />}
     </Wrapper>
   );

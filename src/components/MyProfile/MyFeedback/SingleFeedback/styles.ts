@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { device } from "../../../../constants/device";
 
 export const UserContainer = styled.div`
   width: 96%;
@@ -7,7 +8,7 @@ export const UserContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0.6rem 0;
+  margin: 6px 0;
 
   &:hover {
     background: whitesmoke;
@@ -21,7 +22,7 @@ export const UserAvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 2rem;
+  margin-right: 10px;
 `;
 
 export const UserAvatar = styled.img`
@@ -45,12 +46,28 @@ export const UserName = styled.p`
   color: ${({ theme }) => theme.color.black};
   margin: 0;
   font-weight: 500;
+
+  @media ${device.mobileL} {
+    font-size: 1.2rem;
+  }
+
+  @media ${device.mobileS} {
+    font-size: 1.4rem;
+  }
 `;
 
 export const UserTitle = styled.p`
   font-size: 1.2rem;
   color: #7a7e81;
   margin: 0;
+
+  @media ${device.mobileL} {
+    font-size: 1.1rem;
+  }
+
+  @media ${device.mobileS} {
+    font-size: 1.2rem;
+  }
 `;
 
 export const StyledLink = styled(Link)`

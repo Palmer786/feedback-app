@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { device } from "../../../constants/device";
 
 interface StyledComponentsProps {
   query: string;
@@ -10,6 +11,19 @@ export const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+
+  @media ${device.mobileL} {
+    width: 75%;
+    align-items: center;
+  }
+
+  @media ${device.mobileM} {
+    width: 80%;
+  }
+
+  @media ${device.mobileS} {
+    width: 90%;
+  }
 `;
 
 export const SearchHeader = styled.p`

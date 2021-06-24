@@ -13,6 +13,7 @@ import MyProfile from "./components/MyProfile";
 import ProfileSettings from "./components/ProfileSettings";
 import FeedbackAccepted from "./components/FeedbackAccepted";
 import FeedbackDetails from "./components/FeedbackDetails";
+import MenuButton from "./components/MenuButton";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -45,6 +46,7 @@ const App: React.FC = () => {
         <GlobalStyle />
         <MainContainer>
           <LeftSection />
+          <MenuButton />
           <Switch>
             <Route exact path={routes.HOMEPAGE} component={Homepage} />
             <Route path={routes.SIGN_IN} component={SignIn} />

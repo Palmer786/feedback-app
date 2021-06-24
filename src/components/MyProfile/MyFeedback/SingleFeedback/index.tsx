@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {isLoaded, useFirebase } from "react-redux-firebase";
+import { isLoaded, useFirebase } from "react-redux-firebase";
 
 import * as routes from "../../../../constants/routes";
 import defaultAvatar from "../../../../images/user-image.png";
@@ -46,13 +46,13 @@ const SingleFeedback: React.FC<Props> = ({ doc }) => {
       .then((snapshot) => setUser(snapshot.data() as IUser));
   }, []);
 
-  if (!user) return <p>Loading...</p>;
-
   return (
     <StyledLink to={`${routes.FEEDBACK_DETAILS}${doc.id}`}>
       <UserContainer key={doc.id}>
         <UserAvatarContainer>
-          {user.avatarUrl ? (
+          {!user.displayName ? (
+            <AvatarLoadingSpinner />
+          ) : user.avatarUrl ? (
             <UserAvatar src={user.avatarUrl} />
           ) : (
             <UserAvatar src={defaultAvatar} />

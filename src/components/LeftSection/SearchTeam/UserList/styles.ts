@@ -43,6 +43,7 @@ export const UserAvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 6px;
 `;
 
 export const UserAvatar = styled.img`
@@ -55,7 +56,6 @@ export const UserAvatar = styled.img`
 export const UserName = styled.p`
   font-size: 1.6rem;
   color: white;
-  margin-left: 14px;
   width: calc(100% - 88px);
 `;
 

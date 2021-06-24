@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa";
+import { device } from "../../constants/device";
 
 export const SingleSkillContainer = styled.div`
   width: 100%;
@@ -7,6 +8,11 @@ export const SingleSkillContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media ${device.mobileL} {
+    flex-direction: column;
+    height: 100px;
+  }
 `;
 
 export const SingleSkillName = styled.p`
@@ -22,6 +28,10 @@ export const StarsContainer = styled.div`
   align-items: center;
   margin-right: 20px;
   user-select: none;
+
+  @media ${device.mobileL} {
+    width: 50%;
+  }
 `;
 
 export const StarIcon = styled(FaStar)<{
@@ -33,8 +43,15 @@ export const StarIcon = styled(FaStar)<{
   height: 100%;
   cursor: pointer;
   color: ${({ theme, rating, ratingvalue, hover }) =>
-    ratingvalue <= (hover || rating) ? theme.color.red : theme.color.lighterGray};
+    ratingvalue <= (hover || rating)
+      ? theme.color.red
+      : theme.color.lighterGray};
   transition: color 0.1s;
+
+  @media ${device.mobileL} {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 export const RadioInput = styled.input`

@@ -1,5 +1,6 @@
 /// <reference types="react-scripts" />
 interface ISelector {
+  isMenuOpen: boolean;
   firestore: {
     ordered: {
       users: User[];
