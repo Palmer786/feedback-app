@@ -9,6 +9,7 @@ import userAvatar from "../../images/user-image.png";
 import arrowIcon from "../../images/arrow-icon.png";
 import * as routes from "../../constants/routes";
 import clearIcon from "../../images/clear-icon.png";
+import { showNotification } from "../../constants/notification";
 
 import {
   UserTitle,
@@ -63,17 +64,22 @@ const ProfileSettings: React.FC = () => {
 
   const addNewSkill = () => {
     if (newSkill.length < 2)
-      return alert("Skill should be at least 2 characters");
+      return showNotification(
+        "Error",
+        "Skill should be at least 2 characters.",
+        "danger"
+      );
     if (
       skills.filter(
         (skill) => skill.toLocaleLowerCase() === newSkill.toLocaleLowerCase()
       ).length > 0
     )
-      return alert("Skill already exists");
+      return showNotification("Error", "Skill already exists.", "danger");
 
     firebase.updateProfile({
       skills: !skills ? [newSkill] : [...skills, newSkill],
     });
+    showNotification(newSkill, "Your skill has been added.", "success");
     setNewSkill("");
   };
 
@@ -86,8 +92,11 @@ const ProfileSettings: React.FC = () => {
   const updateProfileImage = () => {
     storageRef
       .getDownloadURL()
-      .then((url) => firebase.updateProfile({ avatarUrl: url }))
-      .catch((e) => alert(e.message));
+      .then((url) => {
+        firebase.updateProfile({ avatarUrl: url });
+        showNotification("Succes!", "Your avatar has been updated.", "success");
+      })
+      .catch((e) => showNotification("Error", e.message, "danger"));
   };
 
   const uploadFile = () => {
@@ -100,12 +109,14 @@ const ProfileSettings: React.FC = () => {
     firebase.updateProfile({
       proffesion: newProffesion,
     });
+    showNotification("Succes!", "Your proffesion has been updated.", "success");
   };
 
   const removeSingleSkill = (skill: string) => {
     firebase.updateProfile({
       skills: skills.filter((el) => el !== skill),
     });
+    showNotification(skill, "Your skill has been removed.", "default");
   };
 
   const handleNewSkillChange = (e: React.ChangeEvent<HTMLInputElement>) =>

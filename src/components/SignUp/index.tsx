@@ -5,6 +5,7 @@ import { useFirebase } from "react-redux-firebase";
 import StyledInput from "../StyledInput";
 import * as routes from "../../constants/routes";
 import { basicSkills } from "../../constants/basicSkills";
+import { showNotification } from "../../constants/notification";
 
 import {
   StyledLink,
@@ -44,9 +45,17 @@ const SignUp: React.FC = () => {
 
   const createAccount = async () => {
     if (firstName.length < 3)
-      return alert("First Name should be at least 3 characters");
+      return showNotification(
+        "Error",
+        "First Name should be at least 3 characters.",
+        "danger"
+      );
     if (lastName.length < 3)
-      return alert("Last Name should be at least 3 characters");
+      return showNotification(
+        "Error",
+        "Last Name should be at least 3 characters.",
+        "danger"
+      );
     try {
       await firebase.createUser(
         { email, password },
@@ -58,8 +67,9 @@ const SignUp: React.FC = () => {
         }
       );
       history.push(routes.HOMEPAGE);
+      showNotification("Succes!", "Your account has been created.", "success");
     } catch (e) {
-      alert(e.message);
+      showNotification("Error", e.message, "danger");
     }
   };
 

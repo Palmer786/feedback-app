@@ -96,7 +96,7 @@ export const ProfileInfoContainer = styled.div`
 `;
 
 export const FullNameP = styled(Link)`
-  width: 90px;
+  width: 150px;
   color: white;
   font-size: 1.6rem;
   margin: 0;
@@ -104,6 +104,14 @@ export const FullNameP = styled(Link)`
 
   &:hover {
     color: ${({ theme }) => theme.color.red};
+  }
+
+  @media ${device.laptop} {
+    width: 100px;
+  }
+
+  @media ${device.tablet} {
+    width: 150px;
   }
 `;
 

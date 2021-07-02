@@ -12,6 +12,7 @@ import closeIcon from "../../images/close-icon.png";
 import userAvatar from "../../images/user-image.png";
 import StyledTextarea from "../StyledTextarea";
 import SingleSkill from "../SingleSkill";
+import { showNotification } from "../../constants/notification";
 
 import {
   Wrapper,
@@ -140,6 +141,11 @@ const UserFeedback: React.FC = () => {
           )
         );
       history.push(routes.FEEDBACK_ACCEPTED);
+      showNotification(
+        "Success!",
+        "Your feedback has been updated.",
+        "success"
+      );
     } else {
       feedbackCollectionRef.add({
         userID: currentUserUID,
@@ -150,6 +156,7 @@ const UserFeedback: React.FC = () => {
         ratedUsers: !ratedUsers ? [params.id] : [...ratedUsers, params.id],
       });
       history.push(routes.FEEDBACK_ACCEPTED);
+      showNotification("Success!", "Your feedback has been sent.", "success");
     }
   };
 

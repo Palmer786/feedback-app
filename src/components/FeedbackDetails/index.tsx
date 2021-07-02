@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 
 import defaultAvatar from "../../images/user-image.png";
 import SingleSkillRating from "../SingleSkillRating";
+import Loading from "../Loading";
+import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
 
 import {
   UserAvatar,
@@ -22,8 +24,6 @@ import {
   TextFeedbackHeader,
   TextFeedback,
 } from "./styles";
-import Loading from "../Loading";
-import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
 
 interface IUser {
   proffesion: string;
@@ -84,7 +84,7 @@ const FeedbackDetails = () => {
         .then((snapshot) => setUser(snapshot.data() as IUser));
   }, [feedback]);
 
-  if (!isLoaded(uid)) return <p>Loading...</p>;
+  if (!isLoaded(uid)) return <Loading />;
 
   return (
     <MainContainer>
@@ -107,7 +107,9 @@ const FeedbackDetails = () => {
                   {proffesion && <UserTitle>{proffesion}</UserTitle>}
                 </UserInfoContainer>
               </UserContainer>
-              {user && !user.displayName ? <AvatarLoadingSpinner /> : (
+              {user && !user.displayName ? (
+                <AvatarLoadingSpinner />
+              ) : (
                 <UserContainer>
                   <UserAvatarContainer>
                     {user.avatarUrl ? (
@@ -144,10 +146,18 @@ const FeedbackDetails = () => {
             ))
           )}
         </PersonalSkillsContainer>
-        <TextFeedbackHeader>What is wrong</TextFeedbackHeader>
-        <TextFeedback>{feedback.whatIsWrong}</TextFeedback>
-        <TextFeedbackHeader>What could be improved</TextFeedbackHeader>
-        <TextFeedback>{feedback.advice}</TextFeedback>
+        {feedback.whatIsWrong && (
+          <>
+            <TextFeedbackHeader>What is wrong</TextFeedbackHeader>
+            <TextFeedback>{feedback.whatIsWrong}</TextFeedback>
+          </>
+        )}
+        {feedback.advice && (
+          <>
+            <TextFeedbackHeader>What could be improved</TextFeedbackHeader>
+            <TextFeedback>{feedback.advice}</TextFeedback>
+          </>
+        )}
       </Wrapper>
     </MainContainer>
   );

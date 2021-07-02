@@ -4,11 +4,13 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "firebase/storage";
 
+import { showNotification } from "../../constants/notification";
 import logo from "../../images/logo.png";
 import userAvatar from "../../images/user-image.png";
 import * as routes from "../../constants/routes";
 import SearchTeam from "./SearchTeam";
 import { toggleMenuOpen } from "../actions/menu";
+import Loading from "../Loading";
 
 import {
   Wrapper,
@@ -24,8 +26,6 @@ import {
   StyledLink,
   StyledSpan,
 } from "./styles";
-
-import Loading from "../Loading";
 
 const LeftSection: React.FC = () => {
   const firebase = useFirebase();
@@ -47,8 +47,13 @@ const LeftSection: React.FC = () => {
       history.push(routes.SIGN_IN);
       dispatch(toggleMenuOpen);
       await firebase.logout();
+      showNotification(
+        "Success!",
+        "You have successfully logged out!",
+        "success"
+      );
     } catch (e) {
-      alert(e.message);
+      showNotification("Error", e.message, "danger");
     }
   };
 

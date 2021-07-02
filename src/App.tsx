@@ -1,6 +1,10 @@
 import React from "react";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ReactNotification from "react-notifications-component";
+import { store } from "react-notifications-component";
+import "animate.css";
+import "react-notifications-component/dist/theme.css";
 
 import * as routes from "./constants/routes";
 import { theme } from "./constants/theme";
@@ -43,6 +47,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <ReactNotification />
         <GlobalStyle />
         <MainContainer>
           <LeftSection />

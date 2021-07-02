@@ -6,6 +6,7 @@ import * as routes from "../../constants/routes";
 import StyledInput from "../StyledInput";
 import googleIcon from "../../images/google-icon.png";
 import { basicSkills } from "../../constants/basicSkills";
+import { showNotification } from "../../constants/notification";
 
 import {
   Wrapper,
@@ -43,8 +44,13 @@ const SignIn: React.FC = () => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       history.push(routes.HOMEPAGE);
+      showNotification(
+        "Succes!",
+        "You have successfully logged in!",
+        "success"
+      );
     } catch (e) {
-      alert(e.message);
+      showNotification("Error", e.message, "danger");
     }
   };
 
@@ -63,8 +69,13 @@ const SignIn: React.FC = () => {
       }
 
       history.push(routes.HOMEPAGE);
+      showNotification(
+        "Succes!",
+        "You have successfully logged in!",
+        "success"
+      );
     } catch (e) {
-      alert(e.message);
+      showNotification("Error", e.message, "danger");
     }
   };
 
