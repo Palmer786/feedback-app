@@ -38,15 +38,19 @@ export const HeaderWrapper = styled.div`
   height: 110px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 
   @media ${device.mobileL} {
-   flex-direction: column;
+    flex-direction: column;
     align-items: flex-start;
     height: 150px;
     margin-top: 20px;
   }
+`;
+
+export const StyledH1 = styled.h1`
+  font-size: 2.8rem;
+  color: ${({ theme }) => theme.color.black};
 `;
 
 export const UserContainer = styled.div`
@@ -60,7 +64,7 @@ export const UserContainer = styled.div`
     justify-content: flex-end;
 
     @media ${device.mobileL} {
-      justify-content: flex-start
+      justify-content: flex-start;
     }
   }
 

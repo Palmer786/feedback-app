@@ -13,6 +13,8 @@ import userAvatar from "../../images/user-image.png";
 import StyledTextarea from "../StyledTextarea";
 import SingleSkill from "../SingleSkill";
 import { showNotification } from "../../constants/notification";
+import Loading from "../Loading";
+import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
 
 import {
   Wrapper,
@@ -33,8 +35,6 @@ import {
   WriteFeedbackContainer,
   CloseIcon,
 } from "./styles";
-import Loading from "../Loading";
-import AvatarLoadingSpinner from "../AvatarLoadingSpinner";
 
 interface ISelectedUser {
   displayName: string;
@@ -127,6 +127,13 @@ const UserFeedback: React.FC = () => {
   };
 
   const submitFeedback = () => {
+    if (Object.keys(skillsRating).length === 0) {
+      return showNotification(
+        "Empty feedback.",
+        "Evaluate the teammate's skill.",
+        "warning"
+      );
+    }
     if (isDocExists) {
       feedbackCollectionRef
         .where("userID", "==", currentUserUID)

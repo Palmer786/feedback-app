@@ -23,6 +23,7 @@ import {
   Wrapper,
   TextFeedbackHeader,
   TextFeedback,
+  StyledH1,
 } from "./styles";
 
 interface IUser {
@@ -94,37 +95,25 @@ const FeedbackDetails = () => {
             <Loading />
           ) : (
             <>
-              <UserContainer>
-                <UserAvatarContainer>
-                  {avatarUrl ? (
-                    <UserAvatar src={avatarUrl} />
-                  ) : (
-                    <UserAvatar src={defaultAvatar} />
-                  )}
-                </UserAvatarContainer>
-                <UserInfoContainer>
-                  <UserName>{displayName}</UserName>
-                  {proffesion && <UserTitle>{proffesion}</UserTitle>}
-                </UserInfoContainer>
-              </UserContainer>
+              <StyledH1>Feedback from:</StyledH1>
               {user && !user.displayName ? (
                 <AvatarLoadingSpinner />
               ) : (
-                <UserContainer>
-                  <UserAvatarContainer>
-                    {user.avatarUrl ? (
-                      <UserAvatar src={user.avatarUrl} />
-                    ) : (
-                      <UserAvatar src={defaultAvatar} />
-                    )}
-                  </UserAvatarContainer>
-                  <UserInfoContainer>
-                    <UserName>{user.displayName}</UserName>
-                    {user.proffesion && (
-                      <UserTitle>{user.proffesion}</UserTitle>
-                    )}
-                  </UserInfoContainer>
-                </UserContainer>
+                  <UserContainer>
+                    <UserAvatarContainer>
+                      {user.avatarUrl ? (
+                        <UserAvatar src={user.avatarUrl} />
+                      ) : (
+                        <UserAvatar src={defaultAvatar} />
+                      )}
+                    </UserAvatarContainer>
+                    <UserInfoContainer>
+                      <UserName>{user.displayName}</UserName>
+                      {user.proffesion && (
+                        <UserTitle>{user.proffesion}</UserTitle>
+                      )}
+                    </UserInfoContainer>
+                  </UserContainer>
               )}
             </>
           )}

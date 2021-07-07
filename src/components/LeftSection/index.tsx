@@ -77,7 +77,7 @@ const LeftSection: React.FC = () => {
         <Loading />
       ) : (
         <ProfileInfoWrapper>
-          <AvatarContainer>
+          <AvatarContainer onClick={() => history.push(routes.MY_PROFILE)}>
             {avatarUrl ? (
               <Avatar src={avatarUrl} alt="avatar" />
             ) : (

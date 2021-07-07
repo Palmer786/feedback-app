@@ -74,6 +74,13 @@ export const AvatarContainer = styled.div`
   border-radius: 50%;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  :hover {
+    transform: scale(1.05);
+    transition: transform 0.2s;
+  }
 `;
 
 export const Avatar = styled.img`
@@ -100,7 +107,7 @@ export const FullNameP = styled(Link)`
   color: white;
   font-size: 1.6rem;
   margin: 0;
-  text-decoration: none;
+  //text-decoration: none;
 
   &:hover {
     color: ${({ theme }) => theme.color.red};

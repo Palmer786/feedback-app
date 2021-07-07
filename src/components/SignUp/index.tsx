@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useFirebase } from "react-redux-firebase";
+import Joi from "joi";
 
 import StyledInput from "../StyledInput";
 import * as routes from "../../constants/routes";
@@ -36,6 +37,16 @@ const SignUp: React.FC = () => {
 
   const history = useHistory();
 
+  const schema = Joi.object({
+    firstName: Joi.string().min(3).max(20).required(),
+    lastName: Joi.string().min(3).max(20).required(),
+    password: Joi.string().min(3).max(25).required(),
+    email: Joi.string().email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net", "pl"] },
+    }),
+  });
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setUserData((prev) => ({ ...prev, [id]: value }));
@@ -44,19 +55,11 @@ const SignUp: React.FC = () => {
   const firebase = useFirebase();
 
   const createAccount = async () => {
-    if (firstName.length < 3)
-      return showNotification(
-        "Error",
-        "First Name should be at least 3 characters.",
-        "danger"
-      );
-    if (lastName.length < 3)
-      return showNotification(
-        "Error",
-        "Last Name should be at least 3 characters.",
-        "danger"
-      );
     try {
+      const { error, value } = schema.validate(userData);
+      if (error)
+        return showNotification("Error", error.details[0].message, "danger");
+
       await firebase.createUser(
         { email, password },
         {
